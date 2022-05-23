@@ -5,12 +5,10 @@ import { Header } from "react-native-elements";
 
 export default function App() {
   return (
-    <Header
-        backgroundColor="#5f9ea0"
-        placement="left"
-        leftComponent={{ icon: 'menu', color: '#fff' }}
-        centerComponent={{ text: 'Home', style: { color: '#fff' } }}
-      />
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 

@@ -8,6 +8,7 @@ import SocialPage from '../pages/SocialPage';
 import ProfilePage from '../pages/ProfilePage';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const TabNavigator = () => {
                 component={HomePage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Ionicons name="home-outline" color={color} size={size} />
+                        <Feather name="home" color={color} size={size} />
                     ),
                 })}
             />
@@ -36,7 +37,7 @@ const TabNavigator = () => {
                 component={ClosetPage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Ionicons name="albums-outline" color={color} size={size} />
+                        <Feather name="columns" color={color} size={size} />
                     ),
                 })}  
             />
@@ -45,7 +46,7 @@ const TabNavigator = () => {
                 component={CameraPage}
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Ionicons name="camera-outline" color={color} size={size} />
+                        <Feather name="camera" color={color} size={size} />
                     ),
                 })} 
             />
@@ -54,7 +55,7 @@ const TabNavigator = () => {
                 component={SocialPage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Ionicons name="share-social-outline" color={color} size={size} />
+                        <Feather name="globe" color={color} size={size} />
                     ),
                 })}    
             />
@@ -63,12 +64,13 @@ const TabNavigator = () => {
                 component={ProfilePage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Ionicons name="person-circle-outline" color={color} size={size} />
+                        <Feather name="user" color={color} size={size} />
                     ),
                 })} 
             />
         </Tab.Navigator>
     );
 };
+  
 
 export default TabNavigator;

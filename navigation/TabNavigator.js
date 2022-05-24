@@ -28,7 +28,7 @@ const TabNavigator = () => {
                 component={HomePage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Feather name="home" color={color} size={size} />
+                        <Feather name="home" color={color} size={24} />
                     ),
                 })}
             />
@@ -37,7 +37,7 @@ const TabNavigator = () => {
                 component={ClosetPage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Feather name="columns" color={color} size={size} />
+                        <Feather name="columns" color={color} size={24} />
                     ),
                 })}  
             />
@@ -46,7 +46,7 @@ const TabNavigator = () => {
                 component={CameraPage}
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Feather name="camera" color={color} size={size} />
+                        <Feather name="camera" color={color} size={24} />
                     ),
                 })} 
             />
@@ -55,7 +55,7 @@ const TabNavigator = () => {
                 component={SocialPage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Feather name="globe" color={color} size={size} />
+                        <Feather name="globe" color={color} size={24} />
                     ),
                 })}    
             />
@@ -64,7 +64,7 @@ const TabNavigator = () => {
                 component={ProfilePage} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
-                        <Feather name="user" color={color} size={size} />
+                        <Feather name="user" color={color} size={24} />
                     ),
                 })} 
             />

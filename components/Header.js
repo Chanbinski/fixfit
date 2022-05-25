@@ -1,51 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Header as HeaderRNE, HeaderProps } from '@rneui/themed';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
+import {  MaterialIcons } from '@expo/vector-icons';
 
-export function Header() {
+
+export function Header () {
     let [fontsLoaded] = useFonts({
         'SFPro': require('../assets/fonts/SF-Pro-Display-Bold.otf'),
       });
-    
-      if (!fontsLoaded) {
-        return <AppLoading />;
-      }
 
-  return (
-    <SafeAreaProvider>
-    <HeaderRNE
-      leftComponent={{
-        text: 'Fixfit', style: styles.heading
-      }}
-      
-      rightComponent={
-          <View style="styles.headerRight">
-            <Ionicons name="reorder-three-outline" size={40} />
-          </View>
-      }
-
-      backgroundColor="#f7ecde"
-    />
-  </SafeAreaProvider>
-  );
-}
+    return (
+        <View style={styles.header}>
+            <Text style={styles.headerText}> Fixfit </Text>
+            <MaterialIcons name='menu' size={30} style={styles.icon} />
+        </View>
+        
+    );
+};
 
 const styles = StyleSheet.create({
-  heading: {
-    color: '#000000',
-    fontSize: 25,
-    fontWeight: 'bold',
-    fontFamily: 'SFPro',
-    marginLeft : 16,
-    marginTop : 5,
-    display: 'flex',
-  },
-  headerRight: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
+    header: {
+        width: '100%',
+        height: '10%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        backgroundColor: "#f7ecde",
+    },
+    headerText: {
+        fontWeight: 'bold',
+        fontSize: 25,
+        fontFamily: 'SFPro',
+        color: '#333',
+        letterSpacing: 1,
+        position: 'absolute',
+        left: 20,
+        top: '50%',
+    },
+    icon: {
+        position: 'absolute',
+        right: 20,
+        top:'50%'
+    }
 });

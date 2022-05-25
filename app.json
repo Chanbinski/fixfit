@@ -18,13 +18,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow Fixfit to use your camera",
+        "NSPhotoLibraryAddUsageDescription": "Allow Fixfit to add to your photo library",
+        "NSPhotoLibraryUsageDescription": "Allow Fixfit to use photos from your photo library"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": []
     },
     "web": {
       "favicon": "./assets/favicon.png"

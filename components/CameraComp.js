@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
+
 
 export default function CameraComp() {
   const cameraRef = useRef(null);
@@ -8,27 +10,30 @@ export default function CameraComp() {
   const [type, setType] = useState(CameraType.back);
   const [previewVisible, setPreviewVisible] = useState(null);
   const [image, setImage] = useState(null);
+  const [chooseImage, setChooseImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setChooseImage(result.uri);
+    }
+  };
 
   const takePicture = async () => {
     const photo = await cameraRef.current.takePictureAsync();
     console.log(photo);
     setPreviewVisible(true);
-    setImage(photo);
+    setChooseImage(photo);
   };
-
-  const startCamera = async() => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    setHasPermission(status === 'granted');
-    if (status === 'granted') {
-      setStartCamera(true)
-    }
-    if (hasPermission === null) {
-      return <View />;
-    } 
-    if (hasPermission === false) {
-      return <Text>No access to camera</Text>;
-    }
-  }
 
   useEffect(() => {
     (async () => {
@@ -54,8 +59,8 @@ export default function CameraComp() {
 
   return (
     <View style={styles.container}>
-      {previewVisible && image ? (
-            <CameraPreview photo={image} retakePicture={retakePicture} savePhoto={savePhoto}  />
+      {previewVisible && chooseImage ? (
+            <CameraPreview photo={chooseImage} retakePicture={retakePicture} savePhoto={savePhoto}  />
           ) : (
       <Camera style={styles.camera} type={type} ref={cameraRef}>
         <View style={styles.flipContainer}>
@@ -66,6 +71,12 @@ export default function CameraComp() {
             }}>
             <Text style={styles.text}> Flip </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.chooseButton}
+            onPress={pickImage}>
+            <Text style={styles.text}> Choose Photo </Text>
+          </TouchableOpacity>
+          {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
         </View>
         <TouchableOpacity
           onPress={takePicture}
@@ -151,6 +162,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     right: 30,
+    flex: 0.1,
+  },
+  chooseButton: {
+    position: 'absolute',
+    top: 30,
+    left: 30,
     flex: 0.1,
   },
   text: {

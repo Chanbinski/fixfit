@@ -9,6 +9,10 @@ export function Header () {
         'SFPro': require('../assets/fonts/SF-Pro-Display-Bold.otf'),
       });
 
+    if (!fontsLoaded) {
+    return null;
+    }
+
     return (
         <View style={styles.header}>
             <Text style={styles.headerText}> Fixfit </Text>

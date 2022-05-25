@@ -6,8 +6,8 @@ import ClosetPage from '../pages/ClosetPage';
 import CameraPage from '../pages/CameraPage';
 import SocialPage from '../pages/SocialPage';
 import ProfilePage from '../pages/ProfilePage';
+import CameraModal from '../components/CameraModal';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
 const Tab = createBottomTabNavigator();

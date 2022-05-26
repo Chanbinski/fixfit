@@ -6,8 +6,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 
 const CameraPage = () => {
-  const [modeStatus, setModeStatus] = useState(true);
-  const [prevModeStatus, setPrevModeStatus] = useState(true);
   const navigation = useNavigation();
 
   const [image, setImage] = useState(null);
@@ -27,10 +25,6 @@ const CameraPage = () => {
     }
   };
 
-  const changeMode = () => {
-    setModeStatus(!modeStatus);
-    console.log(modeStatus);
-  }
 
   console.log(modeStatus);
   return (

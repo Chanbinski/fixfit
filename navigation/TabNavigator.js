@@ -7,7 +7,6 @@ import CameraPage from '../pages/CameraPage';
 import SocialPage from '../pages/SocialPage';
 import ProfilePage from '../pages/ProfilePage';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 
 const Tab = createBottomTabNavigator();

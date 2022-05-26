@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomePage from '../pages/HomePage';
 import ClosetPage from '../pages/ClosetPage';
@@ -10,6 +11,7 @@ import ProfilePage from '../pages/ProfilePage';
 import Feather from 'react-native-vector-icons/Feather';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const TabNavigator = () => {
     return (
@@ -24,7 +26,7 @@ const TabNavigator = () => {
         >
             <Tab.Screen 
                 name="Home" 
-                component={HomePage} 
+                component={HomeStack} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
                         <Feather name="home" color={color} size={24} />
@@ -70,6 +72,17 @@ const TabNavigator = () => {
         </Tab.Navigator>
     );
 };
-  
+
+const HomeStack = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen 
+                name="Home"
+                component={HomePage}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    )
+}
 
 export default TabNavigator;

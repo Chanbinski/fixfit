@@ -19,14 +19,17 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const SocialPage = () => {
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <FlatList
-          data={POSTS}
-          renderItem={({ item }) => <Post item={item} />}
-        />
-      </SafeAreaView>
-    </View>
+    <>
+      <SocialHeader />
+      <View style={styles.container}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <FlatList
+            data={POSTS}
+            renderItem={({ item }) => <Post item={item} />}
+          />
+        </SafeAreaView>
+      </View>
+    </>
   );
 }
 
@@ -137,6 +140,32 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingHorizontal: 12,
   }
+});
+
+const SocialHeader = () => {
+  return (
+    <View style={headerStyles.header}>
+        <Text style={headerStyles.headerText}> Social </Text>
+    </View>
+  );
+}
+
+const headerStyles = StyleSheet.create({
+  header: {
+      width: '100%',
+      height: '13%',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+  },
+  headerText: {
+      fontWeight: 'bold',
+      fontSize: 30,
+      color: '#000',
+      position: 'absolute',
+      left: 10,
+      top: '55%',
+  },
 });
 
 export default SocialPage;

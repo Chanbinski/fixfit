@@ -12,29 +12,26 @@ export function Header () {
     return (
         <View style={styles.header}>
             <Text style={styles.headerText}> Fixfit </Text>
-            <MaterialIcons name='menu' size={30} style={styles.icon} />
+            {/* <MaterialIcons name='menu' size={30} style={styles.icon} /> */}
         </View>
-        
     );
 };
 
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: '10%',
+        height: '13%',
         flexDirection: 'row',
         justifyContent: 'center',
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
     },
     headerText: {
         fontWeight: 'bold',
-        fontSize: 25,
-        fontFamily: 'SFPro',
+        fontSize: 30,
         color: '#000',
-        letterSpacing: 1,
         position: 'absolute',
-        left: 20,
-        top: '50%',
+        left: 10,
+        top: '55%',
     },
     icon: {
         position: 'absolute',

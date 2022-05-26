@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
-import * as ImagePicker from 'expo-image-picker';
 import {  MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import CameraPage from '../pages/CameraPage';
 
 
-export default function CameraComp(changeMode) {
+export default function CameraComp() {
   const cameraRef = useRef(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
@@ -41,7 +39,6 @@ export default function CameraComp(changeMode) {
   const retakePicture = () => {
     setChooseImage(null);
     setPreviewVisible(false);
-
   }
 
   return (
@@ -59,7 +56,7 @@ export default function CameraComp(changeMode) {
             <Text style={styles.text}> Flip </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {navigation.navigate("Camera");}}>
-            <MaterialIcons name='close' size={30} style={styles.chooseButton} />
+            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate("Camera");}}/>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -148,7 +145,7 @@ const styles = StyleSheet.create({
     right: 30,
     flex: 0.1,
   },
-  chooseButton: {
+  cancelButton: {
     position: 'absolute',
     top: 30,
     left: 30,

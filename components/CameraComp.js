@@ -2,31 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
+import {  MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import CameraPage from '../pages/CameraPage';
 
 
-export default function CameraComp() {
+export default function CameraComp(changeMode) {
   const cameraRef = useRef(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
   const [previewVisible, setPreviewVisible] = useState(null);
-  const [image, setImage] = useState(null);
   const [chooseImage, setChooseImage] = useState(null);
-
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setChooseImage(result.uri);
-    }
-  };
+  const navigation = useNavigation();
 
   const takePicture = async () => {
     const photo = await cameraRef.current.takePictureAsync();
@@ -52,7 +39,7 @@ export default function CameraComp() {
   const savePhoto = () => {};
 
   const retakePicture = () => {
-    setImage(null);
+    setChooseImage(null);
     setPreviewVisible(false);
 
   }
@@ -71,12 +58,9 @@ export default function CameraComp() {
             }}>
             <Text style={styles.text}> Flip </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.chooseButton}
-            onPress={pickImage}>
-            <Text style={styles.text}> Choose Photo </Text>
+          <TouchableOpacity onPress={() => {navigation.navigate("Camera");}}>
+            <MaterialIcons name='close' size={30} style={styles.chooseButton} />
           </TouchableOpacity>
-          {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
         </View>
         <TouchableOpacity
           onPress={takePicture}
@@ -169,10 +153,10 @@ const styles = StyleSheet.create({
     top: 30,
     left: 30,
     flex: 0.1,
+    color: '#fff',
   },
   text: {
     fontSize: 20,
     color: 'white',
   },
 });
-

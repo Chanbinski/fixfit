@@ -9,6 +9,7 @@ import ProfilePage from '../pages/ProfilePage';
 import CameraModal from '../components/CameraModal';
 
 import Feather from 'react-native-vector-icons/Feather';
+import CameraComp from '../components/CameraComp';
 
 const Tab = createBottomTabNavigator();
 
@@ -67,6 +68,15 @@ const TabNavigator = () => {
                         <Feather name="user" color={color} size={24} />
                     ),
                 })} 
+            />
+            <Tab.Screen 
+                name="CameraComp" 
+                component={CameraComp} 
+                options={{
+                    headerShown: false,
+                    tabBarStyle: { display: "none" },
+                    tabBarButton: (prop) => null,
+                }} 
             />
         </Tab.Navigator>
     );

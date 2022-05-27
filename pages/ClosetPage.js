@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import {
@@ -27,6 +28,7 @@ const ListItem = ({ item }) => {
 };
 
 const ClosetPage = () => {
+  const navigation = useNavigation();
   return (
     <>
       <ClosetHeader />
@@ -39,7 +41,9 @@ const ClosetPage = () => {
             sections={SECTIONS}
             renderSectionHeader={({ section }) => (
               <>
-                <Text style={styles.sectionHeader}>{section.title}</Text>
+                <Text style={styles.sectionHeader} onPress={() => navigation.navigate(section.title.replace('/',''))}>
+                  {section.title}
+                  </Text>
                 <FlatList
                   horizontal
                   data={section.data}

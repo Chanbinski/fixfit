@@ -55,8 +55,8 @@ export default function CameraComp() {
             }}>
             <Text style={styles.text}> Flip </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {navigation.navigate("Camera");}}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate("Camera");}}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('CameraS');}}>
+            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('CameraS');}}/>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -75,6 +75,11 @@ const CameraPreview = ({photo, retakePicture, savePhoto}) => {
       <ImageBackground
         source={{uri: photo && photo.uri}}
         style={{ flex: 1 }}>
+        <View style={styles.flipContainer}>
+          <TouchableOpacity onPress={() => {navigation.navigate('CameraS');}}>
+            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('CameraS');}}/>
+          </TouchableOpacity>
+        </View>
         <View
           style={{
             flex: 1,
@@ -84,26 +89,10 @@ const CameraPreview = ({photo, retakePicture, savePhoto}) => {
           }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <TouchableOpacity
-              onPress={retakePicture}
-              style={{
-                width: 130,
-                height: 40,
-                alignItems: 'center',
-                borderRadius: 4
-              }}
-            >
+            <TouchableOpacity onPress={ retakePicture } style={ styles.secondScreen }>
               <Text style={styles.text}>Retake</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={savePhoto}
-              style={{
-                width: 130,
-                height: 40,
-                alignItems: 'center',
-                borderRadius: 4
-              }}
-            >
+            <TouchableOpacity onPress={ savePhoto } style={ styles.secondScreen }>
               <Text style={styles.text}> Save </Text>
             </TouchableOpacity>
           </View>
@@ -129,7 +118,7 @@ const styles = StyleSheet.create({
   picButton: {
     width: 70,
     height: 70,
-    bottom: 20,
+    bottom: 60,
     borderRadius: 50,
     backgroundColor: '#fff',
     alignSelf: 'center',
@@ -141,19 +130,28 @@ const styles = StyleSheet.create({
   },
   flipButton: {
     position: 'absolute',
-    top: 30,
+    top: 60,
     right: 30,
     flex: 0.1,
+    paddingRight: 15,
   },
   cancelButton: {
     position: 'absolute',
-    top: 30,
+    top: 60,
     left: 30,
     flex: 0.1,
     color: '#fff',
+    paddingLeft: 15,
   },
   text: {
     fontSize: 20,
     color: 'white',
   },
+  secondScreen: {
+    width: 130,
+    height: 40,
+    alignItems: 'center',
+    borderRadius: 4,
+    bottom: 55,
+  }
 });

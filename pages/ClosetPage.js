@@ -47,7 +47,6 @@ const ClosetPage = () => {
           )}
           renderItem={({ item, section }) => {
             return null;
-            // return <ListItem item={item} />;
           }}
         />
       </SafeAreaView>

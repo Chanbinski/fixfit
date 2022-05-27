@@ -1,7 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Button, ImageBackground, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import CameraComp from '../components/CameraComp';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import {  MaterialIcons } from '@expo/vector-icons';
@@ -49,7 +47,6 @@ const CameraPage = () => {
 
 const ImagePreview = ({photo, resetPicture}) => {
   console.log('Previewing', photo)
-  const navigation = useNavigation();
   return (
     <View style={styles.imagePrev}>
       <ImageBackground

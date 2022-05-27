@@ -2,22 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavigator from './navigation/TabNavigator';
 import { Header } from './navigation/Header';
 
-const Stack = createNativeStackNavigator();
-
 const App = () => {
   return (
-  
     <NavigationContainer>
-      {/* <Stack.Navigator>
-        <Stack.Screen component={Intro} name="Intro" />
-        <Stack.Screen component={Home} name="Home" />
-      </Stack.Navigator> */}
-        <Header />
-        <TabNavigator />
+      <TabNavigator />
     </NavigationContainer>
   );
 }

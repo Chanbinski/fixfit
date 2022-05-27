@@ -10,6 +10,7 @@ import {
   FlatList,
 } from 'react-native';
 
+
 const ListItem = ({ item }) => {
   return (
     <View style={styles.item}>
@@ -27,30 +28,34 @@ const ListItem = ({ item }) => {
 
 const ClosetPage = () => {
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" />
-      <SafeAreaView style={{ flex: 1 }}>
-        <SectionList
-          contentContainerStyle={{ paddingHorizontal: 10 }}
-          stickySectionHeadersEnabled={false}
-          sections={SECTIONS}
-          renderSectionHeader={({ section }) => (
-            <>
-              <Text style={styles.sectionHeader}>{section.title}</Text>
-              <FlatList
-                horizontal
-                data={section.data}
-                renderItem={({ item }) => <ListItem item={item} />}
-                showsHorizontalScrollIndicator={false}
-              />
-            </>
-          )}
-          renderItem={({ item, section }) => {
-            return null;
-          }}
-        />
-      </SafeAreaView>
-    </View>
+    <>
+      <ClosetHeader />
+      <View style={styles.container}>
+        <StatusBar style="light" />
+        <SafeAreaView style={{ flex: 1 }}>
+          <SectionList
+            contentContainerStyle={{ paddingLeft: 15 }}
+            stickySectionHeadersEnabled={false}
+            sections={SECTIONS}
+            renderSectionHeader={({ section }) => (
+              <>
+                <Text style={styles.sectionHeader}>{section.title}</Text>
+                <FlatList
+                  horizontal
+                  data={section.data}
+                  renderItem={({ item }) => <ListItem item={item} />}
+                  showsHorizontalScrollIndicator={false}
+                />
+              </>
+            )}
+            renderItem={({ item, section }) => {
+              return null;
+              // return <ListItem item={item} />;
+            }}
+          />
+        </SafeAreaView>
+      </View>
+    </>
   );
 }
 
@@ -247,17 +252,17 @@ const SECTIONS = [
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7ecde',
+    backgroundColor: '#fff',
   },
   sectionHeader: {
-    fontWeight: '800',
-    fontSize: 18,
+    fontWeight: '700',
+    fontSize: 19,
     color: '#000000',
     marginTop: 20,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   item: {
-    margin: 10,
+    paddingRight: 20
   },
   itemPhoto: {
     width: 200,
@@ -266,6 +271,33 @@ const styles = StyleSheet.create({
   itemText: {
     color: '#000000',
     marginTop: 5,
+  },
+});
+
+const ClosetHeader = () => {
+  return (
+    <View style={headerStyles.header}>
+        <Text style={headerStyles.headerText}> Closet </Text>
+    </View>
+  );
+}
+
+const headerStyles = StyleSheet.create({
+  header: {
+      width: '100%',
+      height: '100%',
+      height: '13%',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+  },
+  headerText: {
+      fontWeight: 'bold',
+      fontSize: 30,
+      color: '#000',
+      position: 'absolute',
+      left: 10,
+      top: '55%',
   },
 });
 

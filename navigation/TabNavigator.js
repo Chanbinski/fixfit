@@ -5,7 +5,8 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import HomePage from '../pages/HomePage';
 import ClosetPage from '../pages/ClosetPage';
-import CameraPage from '../pages/CameraPage';
+import CameraClosetPage from '../pages/CameraClosetPage';
+import CameraSocialPage from '../pages/CameraSocialPage';
 import SocialPage from '../pages/SocialPage';
 import ProfilePage from '../pages/ProfilePage';
 import Accessories from '../pages/Accessories';
@@ -16,7 +17,8 @@ import DressesSkirts from '../pages/DressesSkirts';
 import Shoes from '../pages/Shoes';
 
 import Feather from 'react-native-vector-icons/Feather';
-import CameraComp from '../components/CameraComp';
+import CameraCloset from '../components/CameraCloset';
+import CameraSocial from '../components/CameraSocial';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,24 +52,7 @@ const TabNavigator = () => {
                     ),
                 })}  
             />
-            <Tab.Screen 
-                name="Camera" 
-                component={CameraStack}
-                options={({route}) => ({
-                    tabBarIcon: ({color, size}) => (
-                        <Feather name="camera" color={color} size={24} />
-                    ),
-                    tabBarStyle: { display: ((route) => {
-                        const routeName = getFocusedRouteNameFromRoute(route) ?? ""
-                    
-                        if (routeName === "CameraComp") {
-                            return 'none';
-                        } else {
-                            return 'flex';
-                        }
-                    })(route)},
-                })} 
-            />
+            
             <Tab.Screen 
                 name="Social" 
                 component={SocialPage} 
@@ -95,6 +80,44 @@ const TabNavigator = () => {
                     tabBarButton: (prop) => null,
                 }} 
             /> */}
+            <Tab.Screen 
+                name="CameraClosetPage" 
+                component={CameraClosetStack}
+                options={({route}) => ({
+                    tabBarIcon: ({color, size}) => (
+                        <Feather name="camera" color={color} size={24} />
+                    ),
+                    tabBarStyle: { display: ((route) => {
+                        const routeName = getFocusedRouteNameFromRoute(route) ?? ""
+                    
+                        if (routeName === "CameraCloset") {
+                            return 'none';
+                        } else {
+                            return 'flex';
+                        }
+                    })(route)},
+                    tabBarButton: (prop) => null,
+                })} 
+            />
+            <Tab.Screen 
+                name="CameraSocialPage" 
+                component={CameraSocialStack}
+                options={({route}) => ({
+                    tabBarIcon: ({color, size}) => (
+                        <Feather name="camera" color={color} size={24} />
+                    ),
+                    tabBarStyle: { display: ((route) => {
+                        const routeName = getFocusedRouteNameFromRoute(route) ?? ""
+                    
+                        if (routeName === "CameraSocial") {
+                            return 'none';
+                        } else {
+                            return 'flex';
+                        }
+                    })(route)},
+                    tabBarButton: (prop) => null,
+                })} 
+            />
         </Tab.Navigator>
     );
 };
@@ -111,17 +134,34 @@ const HomeStack = () => {
     )
 }
 
-const CameraStack = () => {
+const CameraClosetStack = () => {
     return (
         <Stack.Navigator>
              <Stack.Screen 
-                name="CameraS"
-                component={CameraPage}
+                name="CameraClosetS"
+                component={CameraClosetPage}
                 options={{ headerShown: false }}
             />
              <Stack.Screen 
-                name="CameraComp"
-                component={CameraComp}
+                name="CameraCloset"
+                component={CameraCloset}
+                options={{ headerShown: false, tabBarStyle: { display: "none" }}}
+            />
+        </Stack.Navigator>
+    )
+}
+
+const CameraSocialStack = () => {
+    return (
+        <Stack.Navigator>
+             <Stack.Screen 
+                name="CameraSocialS"
+                component={CameraSocialPage}
+                options={{ headerShown: false }}
+            />
+             <Stack.Screen 
+                name="CameraSocial"
+                component={CameraSocial}
                 options={{ headerShown: false, tabBarStyle: { display: "none" }}}
             />
         </Stack.Navigator>

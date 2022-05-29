@@ -12,10 +12,12 @@ import {
 import {
   FontAwesome,
   MaterialCommunityIcons,
-  SimpleLineIcons
+  SimpleLineIcons,
+  Ionicons
 } from "@expo/vector-icons";
 
 import Feather from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
 
 const SocialPage = () => {
   return (
@@ -143,9 +145,11 @@ const styles = StyleSheet.create({
 });
 
 const SocialHeader = () => {
+  const navigation = useNavigation();
   return (
     <View style={headerStyles.header}>
         <Text style={headerStyles.headerText}> Social </Text>
+        <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => navigation.navigate('CameraSocialPage')}/>
     </View>
   );
 }
@@ -165,6 +169,11 @@ const headerStyles = StyleSheet.create({
       position: 'absolute',
       left: 10,
       top: '55%',
+  },
+  icon: {
+    position: 'absolute',
+    right: 20,
+    top:'55%'
   },
 });
 

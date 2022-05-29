@@ -4,12 +4,14 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './navigation/TabNavigator';
 import { Header } from './navigation/Header';
+import CameraModal from './components/CameraModal';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <TabNavigator />
+    // </NavigationContainer>
+    <CameraModal />
   );
 }
 

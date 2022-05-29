@@ -139,32 +139,26 @@ const ClosetStack = () => {
              <Stack.Screen 
                 name="Accessories"
                 component={Accessories}
-                options={{ headerShown: false}}
             />
             <Stack.Screen 
                 name="Outerwear"
                 component={Outerwear}
-                options={{ headerShown: false}}
             />
             <Stack.Screen 
                 name="Tops"
                 component={Tops}
-                options={{ headerShown: false}}
             />
             <Stack.Screen 
                 name="Bottoms"
                 component={Bottoms}
-                options={{ headerShown: false}}
             />
             <Stack.Screen 
                 name="DressesSkirts"
                 component={DressesSkirts}
-                options={{ headerShown: false}}
             />
             <Stack.Screen 
                 name="Shoes"
                 component={Shoes}
-                options={{ headerShown: false}}
             />
         </Stack.Navigator>
     )

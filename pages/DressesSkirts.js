@@ -5,7 +5,6 @@ import { Header } from '../navigation/Header';
 const DressesSkirts = ({navigation}) => {
   return (
     <>
-      <Header />
       <View style={styles.container}>
         <Text>Accessories</Text>
         <TouchableOpacity

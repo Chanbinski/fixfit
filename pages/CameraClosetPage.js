@@ -38,7 +38,9 @@ const CameraPage = () => {
       ) : (
         <View>
           <Button title="Pick an image from camera roll" onPress={pickImage}/>
-          <Button title="Use the camera" onPress={() => {navigation.navigate('CameraComp')}} />
+          <Button 
+            title="Use the camera to add to your closet" 
+            onPress={() => {navigation.navigate('CameraCloset')}} />
         </View>
       )}
     </View>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
-import {  MaterialIcons } from '@expo/vector-icons';
+import {  MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -31,7 +31,7 @@ export default function CameraComp() {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text> No access to camera </Text>;
   }
 
   const savePhoto = () => {};
@@ -44,7 +44,7 @@ export default function CameraComp() {
   return (
     <View style={styles.container}>
       {previewVisible && chooseImage ? (
-            <CameraPreview photo={chooseImage} retakePicture={retakePicture} savePhoto={savePhoto}  />
+            <CameraPreview photo={chooseImage} retakePicture={retakePicture} savePhoto={savePhoto} navigation={navigation} />
           ) : (
       <Camera style={styles.camera} type={type} ref={cameraRef}>
         <View style={styles.flipContainer}>
@@ -53,10 +53,13 @@ export default function CameraComp() {
             onPress={() => {
               setType(type === CameraType.back ? CameraType.front : CameraType.back);
             }}>
-            <Text style={styles.text}> Flip </Text>
+            <Ionicons name="camera-reverse-outline" size={30} color="white"/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {navigation.navigate('CameraS');}}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('CameraS');}}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('CameraClosetS');}}>
+            <MaterialIcons 
+              name='close' size={30} 
+              style={styles.cancelButton} 
+              onPress={() => {navigation.navigate('CameraClosetS');}}/>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -68,7 +71,7 @@ export default function CameraComp() {
   );
 }
 
-const CameraPreview = ({photo, retakePicture, savePhoto}) => {
+const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
   console.log('Success', photo)
   return (
     <View style={styles.imagePrev}>

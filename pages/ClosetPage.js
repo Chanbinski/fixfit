@@ -10,6 +10,7 @@ import {
   Image,
   FlatList,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 
 const ListItem = ({ item }) => {
@@ -279,9 +280,11 @@ const styles = StyleSheet.create({
 });
 
 const ClosetHeader = () => {
+  const navigation = useNavigation();
   return (
     <View style={headerStyles.header}>
         <Text style={headerStyles.headerText}> Closet </Text>
+        <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => navigation.navigate('CameraClosetPage')}/>
     </View>
   );
 }
@@ -302,6 +305,11 @@ const headerStyles = StyleSheet.create({
       position: 'absolute',
       left: 10,
       top: '55%',
+  },
+  icon: {
+    position: 'absolute',
+    right: 20,
+    top:'55%'
   },
 });
 

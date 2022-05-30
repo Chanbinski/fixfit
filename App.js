@@ -17,7 +17,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator> 
       {
-        true? ( //change to true to render home screen
+        false? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
           <Stack.Group>
             <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
           </Stack.Group>
@@ -29,30 +29,6 @@ const App = () => {
       }
       </Stack.Navigator>
     </NavigationContainer>
-  )
-}
-
-const Intro = ({navigation}) => {
-  return (
-    <View style={styles.container}>
-        <Text style={styles.title}>fixfit</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Home')}
-          style={styles.startButton}
-        >
-          <Text>Let's get started!</Text>
-        </TouchableOpacity>
-        <StatusBar style="auto" />
-    </View>
-  )
-}
-
-const Home = () => {
-  return (
-    <View style={styles.container}>
-        <Text>Home</Text>
-        <StatusBar style="auto" />
-    </View>
   )
 }
 

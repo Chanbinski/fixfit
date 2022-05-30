@@ -80,10 +80,10 @@ const Signup = ({navigation}) => {
         </TextInput>
         <TouchableOpacity
           style={styles.buttonfilled}
-          onPress={() => navigation.navigate('MoreSignup')}
+          onPress={() => navigation.navigate('Login')}
         >
           <Text 
-          >Continue</Text>
+          >Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}

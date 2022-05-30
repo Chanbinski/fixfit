@@ -4,17 +4,32 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Auth from './pages/Authentication';
 
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavigator from './navigation/TabNavigator';
+
 import { Header } from './navigation/Header';
 import CameraModal from './components/CameraModal';
 
+const Stack = createNativeStackNavigator();
+
 const App = () => {
   return (
-    // <NavigationContainer>
-    //   <TabNavigator />
-    // </NavigationContainer>
-    <Auth />
-  );
+    <NavigationContainer>
+      <Stack.Navigator> 
+      {
+        true? ( //change to true to render home screen
+          <Stack.Group>
+            <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
+          </Stack.Group>
+        ) : (
+          <Stack.Group>
+            <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
+          </Stack.Group>
+        )
+      }
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
 
 const Intro = ({navigation}) => {

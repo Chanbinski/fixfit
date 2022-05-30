@@ -15,7 +15,7 @@ export function Header () {
 
     return (
         <View style={styles.header}>
-            <Text style={styles.headerText}> Fixfit </Text>
+            <Text style={styles.headerText}> fixfit </Text>
             {/* <MaterialIcons name='menu' size={30} style={styles.icon} /> */}
         </View>
     );
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     headerText: {
-        fontWeight: 'bold',
-        fontSize: 30,
+        fontWeight: '400',
+        fontSize: 40,
         color: '#000',
         position: 'absolute',
         left: 10,

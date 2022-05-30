@@ -1,6 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import Auth from './pages/Authentication';
+
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './navigation/TabNavigator';
 import { Header } from './navigation/Header';
@@ -11,7 +13,7 @@ const App = () => {
     // <NavigationContainer>
     //   <TabNavigator />
     // </NavigationContainer>
-    <CameraModal />
+    <Auth />
   );
 }
 

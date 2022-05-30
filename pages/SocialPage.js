@@ -41,7 +41,7 @@ const Post = ({item}) => {
       <View style={styles.top}>
           <View style={styles.topLeft}>
             <TouchableOpacity>
-              <Image style={{ width: 35, height: 35, borderRadius: '100%' }} source={{ uri: item.profilePic }}/>
+              <Image style={{ width: 35, height: 35, borderRadius: 100 }} source={{ uri: item.profilePic }}/>
             </TouchableOpacity>
             <TouchableOpacity>
               <Text style={styles.topLeftText}>{item.id}</Text>

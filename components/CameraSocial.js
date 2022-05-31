@@ -11,6 +11,7 @@ export default function CameraComp() {
   const [type, setType] = useState(CameraType.back);
   const [previewVisible, setPreviewVisible] = useState(null);
   const [chooseImage, setChooseImage] = useState(null);
+  const [flash, setFlash] = useState('off');
   const navigation = useNavigation();
 
   const takePicture = async () => {
@@ -19,6 +20,16 @@ export default function CameraComp() {
     setPreviewVisible(true);
     setChooseImage(photo);
   };
+
+  const handleFlash = () => {
+    if (flash === 'on') {
+      setFlash('off')
+    } else if (flash === 'off') {
+      setFlash('on')
+    } else {
+      setFlash('auto')
+    }
+  }
 
   useEffect(() => {
     (async () => {
@@ -46,7 +57,7 @@ export default function CameraComp() {
       {previewVisible && chooseImage ? (
             <CameraPreview photo={chooseImage} retakePicture={retakePicture} savePhoto={savePhoto} navigation={navigation} />
           ) : (
-      <Camera style={styles.camera} type={type} ref={cameraRef}>
+      <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flash}>
         <View style={styles.flipContainer}>
           <TouchableOpacity
             style={styles.flipButton}
@@ -54,6 +65,16 @@ export default function CameraComp() {
               setType(type === CameraType.back ? CameraType.front : CameraType.back);
             }}>
             <Ionicons name="camera-reverse-outline" size={30} color="white"/>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleFlash}
+            style={styles.flashButton}
+          >
+          {flash === 'on' ? (
+            <Ionicons name='flash-off-outline' size={30} color="white" onPress={handleFlash}/>
+          ) : (
+            <Ionicons name='flash-outline' size={30} color="white" onPress={handleFlash}/>
+          )}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {navigation.navigate('CameraSocialS');}}>
             <MaterialIcons 
@@ -80,8 +101,12 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
         source={{uri: photo && photo.uri}}
         style={{ flex: 1 }}>
         <View style={styles.flipContainer}>
-          <TouchableOpacity onPress={() => {navigation.navigate('CameraS');}}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('CameraS');}}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('CameraSocialS');}}>
+            <MaterialIcons 
+              name='close' 
+              size={30} 
+              style={styles.cancelButton} 
+              onPress={() => {navigation.navigate('CameraSocialS');}}/>
           </TouchableOpacity>
         </View>
         <View
@@ -135,6 +160,13 @@ const styles = StyleSheet.create({
   flipButton: {
     position: 'absolute',
     top: 60,
+    right: 30,
+    flex: 0.1,
+    paddingRight: 15,
+  },
+  flashButton: {
+    position: 'absolute',
+    top: 120,
     right: 30,
     flex: 0.1,
     paddingRight: 15,

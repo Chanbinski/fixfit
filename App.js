@@ -5,13 +5,31 @@ import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './navigation/TabNavigator';
 import { Header } from './navigation/Header';
 import CameraModal from './components/CameraModal';
+import {Picker} from '@react-native-picker/picker';
+import React, { useState, useEffect, useRef } from 'react';
+import PickerModal from "react-native-picker-modal";
 
 const App = () => {
+  const [isVisible, setVisible] = useState(true);
+
   return (
     // <NavigationContainer>
     //   <TabNavigator />
     // </NavigationContainer>
-    <CameraModal />
+    <PickerModal
+  title="You can either take a picture or select one from your album."
+  isVisible={isVisible}
+  data={["Take a photo", "Select from album"]}
+  onPress={(selectedItem) => {
+    Alert.alert("Alert", selectedItem);
+  }}
+  onCancelPress={() => {
+    setVisible(false);
+  }}
+  onBackdropPress={() => {
+    setVisible(false);
+  }}
+/>
   );
 }
 

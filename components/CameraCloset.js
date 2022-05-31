@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import { Camera, CameraType } from 'expo-camera';
 import {  MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import {Picker} from '@react-native-picker/picker';
 
 
 export default function CameraComp() {
@@ -11,6 +12,8 @@ export default function CameraComp() {
   const [type, setType] = useState(CameraType.back);
   const [previewVisible, setPreviewVisible] = useState(null);
   const [chooseImage, setChooseImage] = useState(null);
+  const [flash, setFlash] = useState('off');
+  const [selectedPage, setSelectedPage] = useState();
   const navigation = useNavigation();
 
   const takePicture = async () => {
@@ -19,6 +22,16 @@ export default function CameraComp() {
     setPreviewVisible(true);
     setChooseImage(photo);
   };
+
+  const handleFlash = () => {
+    if (flash === 'on') {
+      setFlash('off')
+    } else if (flash === 'off') {
+      setFlash('on')
+    } else {
+      setFlash('auto')
+    }
+  }
 
   useEffect(() => {
     (async () => {
@@ -44,7 +57,13 @@ export default function CameraComp() {
   return (
     <View style={styles.container}>
       {previewVisible && chooseImage ? (
-            <CameraPreview photo={chooseImage} retakePicture={retakePicture} savePhoto={savePhoto} navigation={navigation} />
+            <CameraPreview 
+              photo={chooseImage} 
+              retakePicture={retakePicture} 
+              savePhoto={savePhoto} 
+              navigation={navigation} 
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}/>
           ) : (
       <Camera style={styles.camera} type={type} ref={cameraRef}>
         <View style={styles.flipContainer}>
@@ -57,9 +76,20 @@ export default function CameraComp() {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {navigation.navigate('CameraClosetS');}}>
             <MaterialIcons 
-              name='close' size={30} 
+              name='close' 
+              size={30} 
               style={styles.cancelButton} 
               onPress={() => {navigation.navigate('CameraClosetS');}}/>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleFlash}
+            style={styles.flashButton}
+          >
+          {flash === 'on' ? (
+            <Ionicons name='flash-off-outline' size={30} color="white" onPress={handleFlash}/>
+          ) : (
+            <Ionicons name='flash-outline' size={30} color="white" onPress={handleFlash}/>
+          )}
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -71,7 +101,7 @@ export default function CameraComp() {
   );
 }
 
-const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
+const CameraPreview = ({photo, retakePicture, savePhoto, navigation, selectedPage, setSelectedPage}) => {
   console.log('Success', photo)
   return (
     <View style={styles.imagePrev}>
@@ -79,8 +109,12 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
         source={{uri: photo && photo.uri}}
         style={{ flex: 1 }}>
         <View style={styles.flipContainer}>
-          <TouchableOpacity onPress={() => {navigation.navigate('CameraS');}}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('CameraS');}}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('CameraClosetS');}}>
+            <MaterialIcons 
+              name='close' 
+              size={30} 
+              style={styles.cancelButton} 
+              onPress={() => {navigation.navigate('CameraClosetS');}}/>
           </TouchableOpacity>
         </View>
         <View
@@ -95,9 +129,20 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
             <TouchableOpacity onPress={ retakePicture } style={ styles.secondScreen }>
               <Text style={styles.text}>Retake</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={ savePhoto } style={ styles.secondScreen }>
-              <Text style={styles.text}> Save </Text>
-            </TouchableOpacity>
+            <Picker
+              selectedValue={selectedPage}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedPage(itemValue)
+              }
+              style={styles.thirdScreen}
+              >
+              <Picker.Item label="Accessories" value="acc" />
+              <Picker.Item label="Outerwear" value="out" />
+              <Picker.Item label="Tops" value="top" />
+              <Picker.Item label="Bottoms" value="bot" />
+              <Picker.Item label="DressesSkirts" value="ds" />
+              <Picker.Item label="Shoes" value="shoe" />
+            </Picker>
           </View>
         </View>
       </ImageBackground>
@@ -138,6 +183,13 @@ const styles = StyleSheet.create({
     flex: 0.1,
     paddingRight: 15,
   },
+  flashButton: {
+    position: 'absolute',
+    top: 120,
+    right: 30,
+    flex: 0.1,
+    paddingRight: 15,
+  },
   cancelButton: {
     position: 'absolute',
     top: 60,
@@ -156,5 +208,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     bottom: 55,
+  },
+  thirdScreen: {
+    width: 130,
+    height: 500,
+    alignItems: 'center',
+    borderRadius: 4,
+    bottom: 55,
+    color: 'white',
   }
 });

@@ -9,12 +9,8 @@ import CameraClosetPage from '../pages/CameraClosetPage';
 import CameraSocialPage from '../pages/CameraSocialPage';
 import SocialPage from '../pages/SocialPage';
 import ProfilePage from '../pages/ProfilePage';
-import Accessories from '../pages/Accessories';
-import Bottoms from '../pages/Bottoms';
-import Outerwear from '../pages/Outerwear';
-import Tops from '../pages/Tops';
-import DressesSkirts from '../pages/DressesSkirts';
-import Shoes from '../pages/Shoes';
+
+import Category from '../pages/Category'
 
 import Feather from 'react-native-vector-icons/Feather';
 import CameraCloset from '../components/CameraCloset';
@@ -203,5 +199,12 @@ const ClosetStack = () => {
         </Stack.Navigator>
     )
 }
+
+const Accessories = () => { return ( <Category name="Accessories" /> ) }
+const Outerwear = () => { return ( <Category name="Outerwear" /> ) }
+const Tops = () => { return ( <Category name="Tops" /> ) }
+const Bottoms = () => { return ( <Category name="Bottoms" /> ) }
+const DressesSkirts = () => { return ( <Category name="Dresses/Skirts" /> ) }
+const Shoes = () => { return ( <Category name="Shoes" /> ) }
 
 export default TabNavigator;

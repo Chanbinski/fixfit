@@ -2,17 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Header } from '../navigation/Header';
 
-const Accessories = ({navigation}) => {
+const Category = (props) => {
   return (
     <>
       <View style={styles.container}>
-        <Text>Accessories</Text>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.startButton}
-        >
-          <Text>Back</Text>
-        </TouchableOpacity>
+        <Text>{props.name}</Text>
         <StatusBar style="auto" />
       </View>
     </>
@@ -38,4 +32,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Accessories;
+export default Category;

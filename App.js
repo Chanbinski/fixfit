@@ -1,59 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import Auth from './pages/Authentication';
+
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavigator from './navigation/TabNavigator';
+
 import { Header } from './navigation/Header';
 import CameraModal from './components/CameraModal';
 import {Picker} from '@react-native-picker/picker';
 import React, { useState, useEffect, useRef } from 'react';
 import PickerModal from "react-native-picker-modal";
 
+const Stack = createNativeStackNavigator();
+
 const App = () => {
   const [isVisible, setVisible] = useState(true);
 
   return (
-    // <NavigationContainer>
-    //   <TabNavigator />
-    // </NavigationContainer>
-    <PickerModal
-  title="You can either take a picture or select one from your album."
-  isVisible={isVisible}
-  data={["Take a photo", "Select from album"]}
-  onPress={(selectedItem) => {
-    Alert.alert("Alert", selectedItem);
-  }}
-  onCancelPress={() => {
-    setVisible(false);
-  }}
-  onBackdropPress={() => {
-    setVisible(false);
-  }}
-/>
-  );
-}
-
-const Intro = ({navigation}) => {
-  return (
-    <View style={styles.container}>
-        <Text style={styles.title}>fixfit</Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Home')}
-          style={styles.startButton}
-        >
-          <Text>Let's get started!</Text>
-        </TouchableOpacity>
-        <StatusBar style="auto" />
-    </View>
-  )
-}
-
-const Home = () => {
-  return (
-    <View style={styles.container}>
-        <Text>Home</Text>
-        <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator> 
+      {
+        true? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
+          <Stack.Group>
+            <Stack.Screen name="Tab" component={TabNavigator} options={{ headerShown: false }} />
+          </Stack.Group>
+        ) : (
+          <Stack.Group>
+            <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
+          </Stack.Group>
+        )
+      }
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 

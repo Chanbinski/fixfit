@@ -17,9 +17,9 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator> 
       {
-        false? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
+        true? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
           <Stack.Group>
-            <Stack.Screen name="Home" component={TabNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="Tab" component={TabNavigator} options={{ headerShown: false }} />
           </Stack.Group>
         ) : (
           <Stack.Group>

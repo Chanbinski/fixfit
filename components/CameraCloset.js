@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import { Camera, CameraType } from 'expo-camera';
 import {  MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import {Picker} from '@react-native-picker/picker';
 
 
 export default function CameraComp() {
@@ -125,20 +124,9 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation, selectedPag
             <TouchableOpacity onPress={ retakePicture } style={ styles.secondScreen }>
               <Text style={styles.text}>Retake</Text>
             </TouchableOpacity>
-            <Picker
-              selectedValue={selectedPage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedPage(itemValue)
-              }
-              style={styles.thirdScreen}
-              >
-              <Picker.Item label="Accessories" value="acc" />
-              <Picker.Item label="Outerwear" value="out" />
-              <Picker.Item label="Tops" value="top" />
-              <Picker.Item label="Bottoms" value="bot" />
-              <Picker.Item label="DressesSkirts" value="ds" />
-              <Picker.Item label="Shoes" value="shoe" />
-            </Picker>
+            <TouchableOpacity onPress={ savePhoto } style={ styles.secondScreen }>
+              <Text style={styles.text}> Save </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>

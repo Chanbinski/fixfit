@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,8 +9,12 @@ import {
   SafeAreaView,
   Image,
   FlatList,
+  ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import PickerModal from '../components/PickerModal/PickerModal';
+import * as ImagePicker from 'expo-image-picker';
 
 
 const ListItem = ({ item }) => {
@@ -30,39 +34,181 @@ const ListItem = ({ item }) => {
 
 const ClosetPage = () => {
   const navigation = useNavigation();
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [isVisible, setVisible] = useState(false);
+
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result);
+      setPreview(true);
+    }
+  };
+
+  const resetPicture = () => {
+    setImage(null);
+    setPreview(false);
+    setVisible(false);
+  }
+
   return (
-    <>
-      <ClosetHeader />
       <View style={styles.container}>
-        <StatusBar style="light" />
-        <SafeAreaView style={{ flex: 1 }}>
-          <SectionList
-            contentContainerStyle={{ paddingLeft: 15 }}
-            stickySectionHeadersEnabled={false}
-            sections={SECTIONS}
-            renderSectionHeader={({ section }) => (
-              <>
-                <Text style={styles.sectionHeader} onPress={() => navigation.navigate(section.title.replace('/',''))}>
-                  {section.title}
-                  </Text>
-                <FlatList
-                  horizontal
-                  data={section.data}
-                  renderItem={({ item }) => <ListItem item={item} />}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </>
-            )}
-            renderItem={({ item, section }) => {
-              return null;
-              // return <ListItem item={item} />;
-            }}
-          />
-        </SafeAreaView>
-      </View>
+        {preview && image ? (
+        <ImagePreview photo={image} resetPicture={resetPicture} />
+      ) : (
+        <>
+     <View style={headerStyles.header}>
+        <Text style={headerStyles.headerText}> Closet </Text>
+        <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/>
+        <PickerModal
+          title="You can either take a picture or select one from your album."
+          isVisible={isVisible}
+          data={["Take a photo", "Select from album"]}
+          onPress={(selectedItem) => {
+            if (selectedItem === 'Take a photo') {
+              navigation.navigate('CameraCloset');
+              setVisible(false);
+            } else {
+              pickImage();
+            }
+            
+          }}
+          onCancelPress={() => {
+            setVisible(false);
+          }}
+          onBackdropPress={() => {
+            setVisible(false);
+          }}
+        />
+    </View>
+    <ClosetBody />
     </>
+      )}
+      </View>
   );
 }
+
+const ClosetBody = () => {
+  return (
+    <View style={styles.container}>
+    <StatusBar style="light" />
+    <SafeAreaView style={{ flex: 1 }}>
+      <SectionList
+        contentContainerStyle={{ paddingLeft: 15 }}
+        stickySectionHeadersEnabled={false}
+        sections={SECTIONS}
+        renderSectionHeader={({ section }) => (
+          <>
+            <Text style={styles.sectionHeader} onPress={() => navigation.navigate(section.title.replace('/',''))}>
+              {section.title}
+              </Text>
+            <FlatList
+              horizontal
+              data={section.data}
+              renderItem={({ item }) => <ListItem item={item} />}
+              showsHorizontalScrollIndicator={false}
+            />
+          </>
+        )}
+        renderItem={({ item, section }) => {
+          return null;
+        }}
+      />
+    </SafeAreaView>
+    </View>
+  )
+}
+
+const ImagePreview = ({photo, resetPicture}) => {
+  console.log('Previewing', photo)
+  return (
+    <View style={styles.imagePrev}>
+      <ImageBackground
+        source={{uri: photo && photo.uri}}
+        style={{ flex: 1 }}>
+          <TouchableOpacity onPress={resetPicture}>
+            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={resetPicture}/>
+          </TouchableOpacity>
+      </ImageBackground>
+    </View>
+  )
+};
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  header: {
+      width: '100%',
+      height: '100%',
+      height: '13%',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+  },
+  headerText: {
+      fontWeight: 'bold',
+      fontSize: 30,
+      color: '#000',
+      position: 'absolute',
+      left: 10,
+      top: '55%',
+  },
+  icon: {
+    position: 'absolute',
+    right: 20,
+    top:'55%'
+  },
+});
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  sectionHeader: {
+    fontWeight: '700',
+    fontSize: 19,
+    color: '#000000',
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  item: {
+    paddingRight: 20
+  },
+  itemPhoto: {
+    width: 200,
+    height: 200,
+  },
+  itemText: {
+    color: '#000000',
+    marginTop: 5,
+  },
+  imagePrev: {
+    backgroundColor: 'transparent',
+    flex: 1,
+    width: '100%',
+    height: '100%'
+  },
+  cancelButton: {
+    position: 'absolute',
+    top: 30,
+    left: 30,
+    flex: 0.1,
+    color: '#fff',
+  },
+});
 
 const SECTIONS = [
   {
@@ -253,64 +399,5 @@ const SECTIONS = [
     ],
   },
 ];
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  sectionHeader: {
-    fontWeight: '700',
-    fontSize: 19,
-    color: '#000000',
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  item: {
-    paddingRight: 20
-  },
-  itemPhoto: {
-    width: 200,
-    height: 200,
-  },
-  itemText: {
-    color: '#000000',
-    marginTop: 5,
-  },
-});
-
-const ClosetHeader = () => {
-  const navigation = useNavigation();
-  return (
-    <View style={headerStyles.header}>
-        <Text style={headerStyles.headerText}> Closet </Text>
-        <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => navigation.navigate('CameraClosetPage')}/>
-    </View>
-  );
-}
-
-const headerStyles = StyleSheet.create({
-  header: {
-      width: '100%',
-      height: '100%',
-      height: '13%',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      backgroundColor: '#fff',
-  },
-  headerText: {
-      fontWeight: 'bold',
-      fontSize: 30,
-      color: '#000',
-      position: 'absolute',
-      left: 10,
-      top: '55%',
-  },
-  icon: {
-    position: 'absolute',
-    right: 20,
-    top:'55%'
-  },
-});
 
 export default ClosetPage;

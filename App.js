@@ -6,17 +6,11 @@ import Auth from './pages/Authentication';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavigator from './navigation/TabNavigator';
-
-import { Header } from './navigation/Header';
-import CameraModal from './components/CameraModal';
-import {Picker} from '@react-native-picker/picker';
-import React, { useState, useEffect, useRef } from 'react';
-import PickerModal from "react-native-picker-modal";
+import React from 'react';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const [isVisible, setVisible] = useState(true);
 
   return (
     <NavigationContainer>

@@ -77,40 +77,24 @@ const TabNavigator = () => {
                 }} 
             /> */}
             <Tab.Screen 
-                name="CameraClosetPage" 
-                component={CameraClosetStack}
+                name="CameraCloset" 
+                component={CameraCloset}
                 options={({route}) => ({
                     tabBarIcon: ({color, size}) => (
                         <Feather name="camera" color={color} size={24} />
                     ),
-                    tabBarStyle: { display: ((route) => {
-                        const routeName = getFocusedRouteNameFromRoute(route) ?? ""
-                    
-                        if (routeName === "CameraCloset") {
-                            return 'none';
-                        } else {
-                            return 'flex';
-                        }
-                    })(route)},
+                    tabBarStyle: { display: 'none', },
                     tabBarButton: (prop) => null,
                 })} 
             />
             <Tab.Screen 
-                name="CameraSocialPage" 
-                component={CameraSocialStack}
+                name="CameraSocial" 
+                component={CameraSocial}
                 options={({route}) => ({
                     tabBarIcon: ({color, size}) => (
                         <Feather name="camera" color={color} size={24} />
                     ),
-                    tabBarStyle: { display: ((route) => {
-                        const routeName = getFocusedRouteNameFromRoute(route) ?? ""
-                    
-                        if (routeName === "CameraSocial") {
-                            return 'none';
-                        } else {
-                            return 'flex';
-                        }
-                    })(route)},
+                    tabBarStyle: { display: 'none', },
                     tabBarButton: (prop) => null,
                 })} 
             />

@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   TextStyle,
 } from "react-native";
-import Modal from "@react-native-modal";
+import Modal from "react-native-modal";
 /**
  * ? Local Imports
  */

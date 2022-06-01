@@ -3,26 +3,108 @@ import {
   StyleSheet,
   Text,
   View,
+  SectionList,
   SafeAreaView,
-  TouchableOpacity,
   Image,
-  FlatList
-} from "react-native";
-
+  FlatList,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import {
-  FontAwesome,
   MaterialCommunityIcons,
-  SimpleLineIcons,
-  Ionicons
+  Ionicons,
+  MaterialIcons,
 } from "@expo/vector-icons";
-
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
+import PickerModal from '../components/PickerModal/PickerModal';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useState } from 'react';
+
 
 const SocialPage = () => {
+  const navigation = useNavigation();
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [isVisible, setVisible] = useState(false);
+
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result);
+      setPreview(true);
+    }
+  };
+
+  const resetPicture = () => {
+    setImage(null);
+    setPreview(false);
+    setVisible(false);
+  }
+
   return (
-    <>
-      <SocialHeader />
+    <View style={styles.container}>
+        {preview && image ? (
+        <ImagePreview photo={image} resetPicture={resetPicture} />
+      ) : (
+        <>
+     <View style={headerStyles.header}>
+        <Text style={headerStyles.headerText}> Social </Text>
+        <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/>
+        <PickerModal
+          title="You can either take a picture or select one from your album."
+          isVisible={isVisible}
+          data={["Take a photo", "Select from album"]}
+          onPress={(selectedItem) => {
+            if (selectedItem === 'Take a photo') {
+              navigation.navigate('CameraSocial');
+              setVisible(false);
+            } else {
+              pickImage();
+            }
+          }}
+          onCancelPress={() => {
+            setVisible(false);
+          }}
+          onBackdropPress={() => {
+            setVisible(false);
+          }}
+        />
+    </View>
+    <SocialBody />
+    </>
+      )}
+      </View>
+  );
+}
+
+const ImagePreview = ({photo, resetPicture}) => {
+  console.log('Previewing', photo)
+  return (
+    <View style={styles.imagePrev}>
+      <ImageBackground
+        source={{uri: photo && photo.uri}}
+        style={{ flex: 1 }}>
+          <TouchableOpacity onPress={resetPicture}>
+            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={resetPicture}/>
+          </TouchableOpacity>
+      </ImageBackground>
+    </View>
+  )
+};
+
+
+const SocialBody = () => {
+  return (
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 1 }}>
           <FlatList
@@ -31,7 +113,6 @@ const SocialPage = () => {
           />
         </SafeAreaView>
       </View>
-    </>
   );
 }
 

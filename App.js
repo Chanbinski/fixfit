@@ -1,17 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
 import TabNavigator from './navigation/TabNavigator';
-import { Header } from './navigation/Header';
-import CameraModal from './components/CameraModal';
+import React from 'react';
+
 
 const App = () => {
+
   return (
-    // <NavigationContainer>
-    //   <TabNavigator />
-    // </NavigationContainer>
-    <CameraModal />
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
   );
 }
 

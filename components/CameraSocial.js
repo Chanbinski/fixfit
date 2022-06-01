@@ -55,12 +55,12 @@ export default function CameraComp() {
             }}>
             <Ionicons name="camera-reverse-outline" size={30} color="white"/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {navigation.navigate('CameraSocialS');}}>
+          <TouchableOpacity onPress={() => {navigation.navigate('Social');}}>
             <MaterialIcons 
               name='close' 
               size={30} 
               style={styles.cancelButton} 
-              onPress={() => {navigation.navigate('CameraSocialS');}}/>
+              onPress={() => {navigation.navigate('Social');}}/>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -80,8 +80,8 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
         source={{uri: photo && photo.uri}}
         style={{ flex: 1 }}>
         <View style={styles.flipContainer}>
-          <TouchableOpacity onPress={() => {navigation.navigate('CameraS');}}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('CameraS');}}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('Social');}}>
+            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('Social');}}/>
           </TouchableOpacity>
         </View>
         <View

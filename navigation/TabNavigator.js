@@ -5,16 +5,16 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import HomePage from '../pages/HomePage';
 import ClosetPage from '../pages/ClosetPage';
-import CameraClosetPage from '../pages/CameraClosetPage';
-import CameraSocialPage from '../pages/CameraSocialPage';
 import SocialPage from '../pages/SocialPage';
 import ProfilePage from '../pages/ProfilePage';
 
 import Category from '../pages/Category'
 
 import Feather from 'react-native-vector-icons/Feather';
-import CameraCloset from '../components/CameraCloset';
-import CameraSocial from '../components/CameraSocial';
+import CameraCloset from '../components/Closet/CameraCloset';
+import CameraSocial from '../components/Social/CameraSocial';
+import ImageCloset from '../components/Closet/ImageCloset';
+import ImageSocial from '../components/Social/ImageSocial';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -83,7 +83,7 @@ const TabNavigator = () => {
                     tabBarIcon: ({color, size}) => (
                         <Feather name="camera" color={color} size={24} />
                     ),
-                    tabBarStyle: { display: 'none', },
+                    tabBarStyle: { display: 'none' },
                     tabBarButton: (prop) => null,
                 })} 
             />
@@ -95,6 +95,28 @@ const TabNavigator = () => {
                         <Feather name="camera" color={color} size={24} />
                     ),
                     tabBarStyle: { display: 'none', },
+                    tabBarButton: (prop) => null,
+                })} 
+            />
+            <Tab.Screen 
+                name="ImageCloset" 
+                component={ImageCloset}
+                options={({route}) => ({
+                    tabBarIcon: ({color, size}) => (
+                        <Feather name="camera" color={color} size={24} />
+                    ),
+                    tabBarStyle: { display: 'none' },
+                    tabBarButton: (prop) => null,
+                })} 
+            />
+            <Tab.Screen 
+                name="ImageSocial" 
+                component={ImageSocial}
+                options={({route}) => ({
+                    tabBarIcon: ({color, size}) => (
+                        <Feather name="camera" color={color} size={24} />
+                    ),
+                    tabBarStyle: { display: 'none' },
                     tabBarButton: (prop) => null,
                 })} 
             />
@@ -114,39 +136,8 @@ const HomeStack = () => {
     )
 }
 
-const CameraClosetStack = () => {
-    return (
-        <Stack.Navigator>
-             <Stack.Screen 
-                name="CameraClosetS"
-                component={CameraClosetPage}
-                options={{ headerShown: false }}
-            />
-             <Stack.Screen 
-                name="CameraCloset"
-                component={CameraCloset}
-                options={{ headerShown: false, tabBarStyle: { display: "none" }}}
-            />
-        </Stack.Navigator>
-    )
-}
 
-const CameraSocialStack = () => {
-    return (
-        <Stack.Navigator>
-             <Stack.Screen 
-                name="CameraSocialS"
-                component={CameraSocialPage}
-                options={{ headerShown: false }}
-            />
-             <Stack.Screen 
-                name="CameraSocial"
-                component={CameraSocial}
-                options={{ headerShown: false, tabBarStyle: { display: "none" }}}
-            />
-        </Stack.Navigator>
-    )
-}
+
 
 const ClosetStack = () => {
     return (

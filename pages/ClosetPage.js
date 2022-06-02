@@ -64,7 +64,11 @@ const ClosetPage = () => {
   return (
       <View style={styles.container}>
         {preview && image ? (
-        <ImagePreview photo={image} resetPicture={resetPicture} />
+          navigation.navigate('ImageCloset', {
+            photo: image, 
+          }),
+          console.log(image),
+          resetPicture()
       ) : (
         <>
      <View style={headerStyles.header}>
@@ -99,6 +103,7 @@ const ClosetPage = () => {
 }
 
 const ClosetBody = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
     <StatusBar style="light" />
@@ -129,7 +134,7 @@ const ClosetBody = () => {
   )
 }
 
-const ImagePreview = ({photo, resetPicture}) => {
+const ImagePreview1 = ({photo, resetPicture}) => {
   console.log('Previewing', photo)
   return (
     <View style={styles.imagePrev}>
@@ -176,6 +181,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   sectionHeader: {
     fontWeight: '700',

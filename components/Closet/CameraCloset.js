@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react
 import { Camera, CameraType } from 'expo-camera';
 import {  MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import PickerModal from '../PickerModal/PickerModal';
 
 
 export default function CameraComp() {
@@ -42,10 +43,10 @@ export default function CameraComp() {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text> No access to camera </Text>;
   }
 
-  const savePhoto = () => {};
+  const savePhoto = ({category}) => {};
 
   const retakePicture = () => {
     setChooseImage(null);
@@ -55,9 +56,12 @@ export default function CameraComp() {
   return (
     <View style={styles.container}>
       {previewVisible && chooseImage ? (
-            <CameraPreview photo={chooseImage} retakePicture={retakePicture} savePhoto={savePhoto} navigation={navigation} />
+            <CameraPreview 
+              photo={chooseImage} 
+              retakePicture={retakePicture} 
+              savePhoto={savePhoto} />
           ) : (
-      <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flash}>
+      <Camera style={styles.camera} type={type} ref={cameraRef}>
         <View style={styles.flipContainer}>
           <TouchableOpacity
             style={styles.flipButton}
@@ -66,12 +70,22 @@ export default function CameraComp() {
             }}>
             <Ionicons name="camera-reverse-outline" size={30} color="white"/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {navigation.navigate('Social');}}>
+          <TouchableOpacity onPress={() => {navigation.navigate('Closet');}}>
             <MaterialIcons 
               name='close' 
               size={30} 
               style={styles.cancelButton} 
-              onPress={() => {navigation.navigate('Social');}}/>
+              onPress={() => {navigation.navigate('Closet');}}/>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={handleFlash}
+            style={styles.flashButton}
+          >
+          {flash === 'on' ? (
+            <Ionicons name='flash-off-outline' size={30} color="white" onPress={handleFlash}/>
+          ) : (
+            <Ionicons name='flash-outline' size={30} color="white" onPress={handleFlash}/>
+          )}
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -83,16 +97,24 @@ export default function CameraComp() {
   );
 }
 
-const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
+const CameraPreview = ({photo, retakePicture, savePhoto}) => {
   console.log('Success', photo)
+  const [isVisible, setVisible] = useState(false);
+  const navigation = useNavigation();
   return (
     <View style={styles.imagePrev}>
       <ImageBackground
         source={{uri: photo && photo.uri}}
         style={{ flex: 1 }}>
         <View style={styles.flipContainer}>
-          <TouchableOpacity onPress={() => {navigation.navigate('Social');}}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('Social');}}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('Closet');}}>
+            <MaterialIcons 
+              name='close' 
+              size={30} 
+              style={styles.cancelButton} 
+              onPress={() => {
+                navigation.navigate('Closet');
+                retakePicture(); }}/>
           </TouchableOpacity>
         </View>
         <View
@@ -105,11 +127,31 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation}) => {
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity onPress={ retakePicture } style={ styles.secondScreen }>
-              <Text style={styles.text}>Retake</Text>
+              <Text style={styles.text}> Retake </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={ savePhoto } style={ styles.secondScreen }>
+            <TouchableOpacity 
+              onPress={() => {
+                setVisible(true); 
+              }} 
+              style={ styles.secondScreen }>
               <Text style={styles.text}> Save </Text>
             </TouchableOpacity>
+            <PickerModal
+          title="Choose a category that you would like to save to."
+          isVisible={isVisible}
+          data={["Accessories", "Outerwear", "Tops", "Bottoms", "Dresses/Skirts", "Shoes"]}
+          onPress={(selectedItem) => {
+            savePhoto(selectedItem);
+            setVisible(false);
+            navigation.navigate('Closet');
+          }}
+          onCancelPress={() => {
+            setVisible(false);
+          }}
+          onBackdropPress={() => {
+            setVisible(false);
+          }}
+        />
           </View>
         </View>
       </ImageBackground>
@@ -175,5 +217,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     bottom: 55,
-  }
+  },
 });

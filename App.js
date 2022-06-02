@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, LogBox } from 'react-native';
 
 import Auth from './pages/Authentication';
 
@@ -9,6 +9,10 @@ import TabNavigator from './navigation/TabNavigator';
 import React from 'react';
 
 const Stack = createNativeStackNavigator();
+
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const App = () => {
 

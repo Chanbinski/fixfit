@@ -54,7 +54,11 @@ const SocialPage = () => {
   return (
     <View style={styles.container}>
         {preview && image ? (
-        <ImagePreview photo={image} resetPicture={resetPicture} />
+          navigation.navigate('ImageSocial', {
+            photo: image, 
+          }),
+          console.log(image),
+          resetPicture()
       ) : (
         <>
      <View style={headerStyles.header}>

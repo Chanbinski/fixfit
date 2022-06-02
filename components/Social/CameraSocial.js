@@ -12,7 +12,6 @@ export default function CameraComp() {
   const [previewVisible, setPreviewVisible] = useState(null);
   const [chooseImage, setChooseImage] = useState(null);
   const [flash, setFlash] = useState('off');
-  const [selectedPage, setSelectedPage] = useState();
   const navigation = useNavigation();
 
   const takePicture = async () => {
@@ -43,7 +42,7 @@ export default function CameraComp() {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text> No access to camera </Text>;
+    return <Text>No access to camera</Text>;
   }
 
   const savePhoto = () => {};
@@ -59,12 +58,9 @@ export default function CameraComp() {
             <CameraPreview 
               photo={chooseImage} 
               retakePicture={retakePicture} 
-              savePhoto={savePhoto} 
-              navigation={navigation} 
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}/>
+              savePhoto={savePhoto} />
           ) : (
-      <Camera style={styles.camera} type={type} ref={cameraRef}>
+      <Camera style={styles.camera} type={type} ref={cameraRef} flashMode={flash}>
         <View style={styles.flipContainer}>
           <TouchableOpacity
             style={styles.flipButton}
@@ -73,12 +69,12 @@ export default function CameraComp() {
             }}>
             <Ionicons name="camera-reverse-outline" size={30} color="white"/>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {navigation.navigate('Closet');}}>
+          <TouchableOpacity onPress={() => {navigation.navigate('Social');}}>
             <MaterialIcons 
               name='close' 
               size={30} 
               style={styles.cancelButton} 
-              onPress={() => {navigation.navigate('Closet');}}/>
+              onPress={() => {navigation.navigate('Social');}}/>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={handleFlash}
@@ -100,7 +96,7 @@ export default function CameraComp() {
   );
 }
 
-const CameraPreview = ({photo, retakePicture, savePhoto, navigation, selectedPage, setSelectedPage}) => {
+const CameraPreview = ({photo, retakePicture, savePhoto}) => {
   console.log('Success', photo)
   return (
     <View style={styles.imagePrev}>
@@ -108,8 +104,14 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation, selectedPag
         source={{uri: photo && photo.uri}}
         style={{ flex: 1 }}>
         <View style={styles.flipContainer}>
-          <TouchableOpacity onPress={() => {navigation.navigate('Closet');}}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {navigation.navigate('Closet');}}/>
+          <TouchableOpacity onPress={() => {navigation.navigate('Social');}}>
+            <MaterialIcons 
+              name='close' 
+              size={30} 
+              style={styles.cancelButton} 
+              onPress={() => {
+                navigation.navigate('Social');
+                retakePicture(); }}/>
           </TouchableOpacity>
         </View>
         <View
@@ -122,10 +124,10 @@ const CameraPreview = ({photo, retakePicture, savePhoto, navigation, selectedPag
         >
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity onPress={ retakePicture } style={ styles.secondScreen }>
-              <Text style={styles.text}>Retake</Text>
+              <Text style={styles.text}> Retake </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={ savePhoto } style={ styles.secondScreen }>
-              <Text style={styles.text}> Save </Text>
+              <Text style={styles.text}> Post </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -192,13 +194,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     bottom: 55,
-  },
-  thirdScreen: {
-    width: 130,
-    height: 500,
-    alignItems: 'center',
-    borderRadius: 4,
-    bottom: 55,
-    color: 'white',
   }
 });

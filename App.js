@@ -1,31 +1,38 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
-import Auth from './pages/Authentication';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavigator from './navigation/TabNavigator';
-import React from 'react';
+
+import './config/firebase';
+import AuthStack from './navigation/AuthStack';
+//import RootNavigation from './navigation/RootNavigation';
+
+import { useAuthentication } from './utils/hooks/useAuthentication';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
 
+  const { user } = useAuthentication();
+
   return (
     <NavigationContainer>
       <Stack.Navigator> 
       {
-        true? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
+        user? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
           <Stack.Group>
             <Stack.Screen name="Tab" component={TabNavigator} options={{ headerShown: false }} />
           </Stack.Group>
         ) : (
           <Stack.Group>
-            <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
+            <Stack.Screen name="Auth" component={AuthStack} options={{ headerShown: false }} />
           </Stack.Group>
         )
       }
+        {/* <RootNavigation /> */}
       </Stack.Navigator>
     </NavigationContainer>
   )

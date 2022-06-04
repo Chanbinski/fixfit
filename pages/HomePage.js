@@ -18,7 +18,7 @@ const HomePage = () => {
     <>
       <Header />
       <View style={styles.container}>
-        <Text>{user.email}</Text>
+        <Text>{user?.email}</Text>
         <StatusBar style="auto" />
         {/* <Canvas style={{ background: "#171717" }}>
           <Suspense fallback={null}>

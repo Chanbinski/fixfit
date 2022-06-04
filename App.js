@@ -1,15 +1,12 @@
 import React from 'react';
+import './config/firebase';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavigator from './navigation/TabNavigator';
-
-import './config/firebase';
 import AuthStack from './navigation/AuthStack';
-//import RootNavigation from './navigation/RootNavigation';
-
 import { useAuthentication } from './utils/hooks/useAuthentication';
 
 const Stack = createNativeStackNavigator();
@@ -32,7 +29,6 @@ const App = () => {
           </Stack.Group>
         )
       }
-        {/* <RootNavigation /> */}
       </Stack.Navigator>
     </NavigationContainer>
   )

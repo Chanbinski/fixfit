@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Button } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore'
 
 const auth = getAuth();
 
@@ -32,6 +33,7 @@ const SignupPage = ({navigation}) => {
 
         try {
           await createUserWithEmailAndPassword(auth, value.email, value.password);
+
           navigation.navigate('Login')
         } catch (error) {
           setValue({

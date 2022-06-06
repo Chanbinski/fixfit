@@ -1,7 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Button } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { setDoc, doc } from 'firebase/firestore'
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
+import { doc, setDoc } from "firebase/firestore"; 
+
 
 const auth = getAuth();
 
@@ -10,19 +11,21 @@ const SignupPage = ({navigation}) => {
     const [value, setValue] = React.useState({
         email: '',
         password: '',
+        name: '',
         username: '',
         confirmedPassword: '',
         error: ''
     })
 
     async function signup() {
-        if (value.email === '' || value.password === '' || value.username === '') {
+        if (value.email === '' || value.name === '' || value.username === '' || value.password === '') {
             setValue({
               ...value,
-              error: 'Email, username, and password are mandatory.'
+              error: 'There are mandatory fields you didn\'t fill out.'
             })
             return;
         } 
+
         if (value.password !== value.confirmedPassword) {
             setValue({
               ...value,
@@ -31,10 +34,21 @@ const SignupPage = ({navigation}) => {
             return;
         }
 
+        // try {
+        //   await setDoc(doc(db, "users", value.email), {
+        //     name: value.name,
+        //     username: value.username,
+        //   });
+        // } catch (e) {
+        //   setValue({
+        //     ...value,
+        //     error: error.message,
+        //   })
+        // }
+
         try {
           await createUserWithEmailAndPassword(auth, value.email, value.password);
-
-          navigation.navigate('Login')
+          // navigation.navigate('Login')
         } catch (error) {
           setValue({
             ...value,
@@ -49,16 +63,22 @@ const SignupPage = ({navigation}) => {
           <Text style={styles.signuptitle}>Create your account</Text>
           <TextInput
             style={styles.input}
-            placeholder="Email"
-            value={value.email}
-            onChangeText={(text) => setValue({ ...value, email: text })}
-          >
-          </TextInput>
+            placeholder="Name"
+            value={value.name}
+            onChangeText={(text) => setValue({ ...value, name: text })}
+          ></TextInput>
           <TextInput
             style={styles.input}
             placeholder="Username"
             value={value.username}
             onChangeText={(text) => setValue({ ...value, username: text })}
+          >
+          </TextInput>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={value.email}
+            onChangeText={(text) => setValue({ ...value, email: text })}
           >
           </TextInput>
           <TextInput

@@ -135,17 +135,19 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     boxShadow: 10,
   },
-  displayBar: {
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
+ 
   textLeft: {
     flexDirection: "row", 
     alignItems: "center", 
     flex: 1,
     fontSize: 16,
     paddingLeft: 8,
+  },
+  displayBar: {
+    flex: 3,
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
   image: {
     width: 100,
@@ -174,12 +176,7 @@ const PICTURES = [
   {
     imageUrl: 'https://picsum.photos/id/1006/200',
   },
-  {
-    imageUrl: 'https://picsum.photos/id/1006/200',
-  },
-  {
-    imageUrl: 'https://picsum.photos/id/1006/200',
-  },
+
 ];
 
 export default ProfilePage;

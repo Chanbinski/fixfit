@@ -1,19 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
 import {
   StyleSheet,
   Text,
   View,
-  SectionList,
   SafeAreaView,
   Image,
   FlatList,
-  ImageBackground,
   TouchableOpacity,
 } from 'react-native';
 import {
   MaterialCommunityIcons,
   Ionicons,
-  MaterialIcons,
 } from "@expo/vector-icons";
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
@@ -90,22 +86,6 @@ const SocialPage = () => {
       </View>
   );
 }
-
-const ImagePreview = ({photo, resetPicture}) => {
-  console.log('Previewing', photo)
-  return (
-    <View style={styles.imagePrev}>
-      <ImageBackground
-        source={{uri: photo && photo.uri}}
-        style={{ flex: 1 }}>
-          <TouchableOpacity onPress={resetPicture}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={resetPicture}/>
-          </TouchableOpacity>
-      </ImageBackground>
-    </View>
-  )
-};
-
 
 const SocialBody = () => {
   return (
@@ -228,16 +208,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   }
 });
-
-const SocialHeader = () => {
-  const navigation = useNavigation();
-  return (
-    <View style={headerStyles.header}>
-        <Text style={headerStyles.headerText}> Social </Text>
-        <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => navigation.navigate('CameraSocialPage')}/>
-    </View>
-  );
-}
 
 const headerStyles = StyleSheet.create({
   header: {

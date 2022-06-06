@@ -16,7 +16,6 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../components/PickerModal/PickerModal';
 import * as ImagePicker from 'expo-image-picker';
 
-
 const ListItem = ({ item }) => {
   return (
     <View style={styles.item}>
@@ -133,21 +132,6 @@ const ClosetBody = () => {
     </View>
   )
 }
-
-const ImagePreview1 = ({photo, resetPicture}) => {
-  console.log('Previewing', photo)
-  return (
-    <View style={styles.imagePrev}>
-      <ImageBackground
-        source={{uri: photo && photo.uri}}
-        style={{ flex: 1 }}>
-          <TouchableOpacity onPress={resetPicture}>
-            <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={resetPicture}/>
-          </TouchableOpacity>
-      </ImageBackground>
-    </View>
-  )
-};
 
 const headerStyles = StyleSheet.create({
   container: {

@@ -13,8 +13,6 @@
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
-    "@react-three/drei": "^9.11.3",
-    "@react-three/fiber": "^8.0.20",
     "@types/react": "~17.0.21",
     "@types/react-native": "^0.67.7",
     "expo": "~45.0.0",

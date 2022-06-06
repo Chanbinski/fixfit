@@ -33,7 +33,7 @@ const Login = ({navigation}) => {
         <TouchableOpacity
           style={styles.buttonfilled}
         >
-          <Text>Login</Text>
+          <Text> Login </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-
   },
   signintitle: {
     fontSize: 70,

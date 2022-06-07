@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -19,7 +19,43 @@ import ImageSocial from '../components/Social/ImageSocial';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+import { useAuthentication } from '../utils/hooks/useAuthentication';
+
+import { doc, getDoc } from "firebase/firestore";
+import { db } from '../config/firebase'
+
+import { Alert } from 'react-native'
+
 const TabNavigator = () => {
+
+    const { user } = useAuthentication();
+
+    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            const docRef = doc(db, "users", user.email);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setName(docSnap.data().name);
+                setUsername(docSnap.data().username);
+            } else {
+                // Cannot fetch data
+            }
+        }
+        try {
+            fetchData();
+        } catch(error) {
+            console.log(error);
+        }
+    });
+
+    const ProfilePageWithProps = () => { // The downside of react...
+        return <ProfilePage username={username}/>
+    }
+
     return (
         <Tab.Navigator
             screenOptions={{
@@ -60,7 +96,7 @@ const TabNavigator = () => {
             />
             <Tab.Screen 
                 name="Profile" 
-                component={ProfilePage} 
+                component={ProfilePageWithProps} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
                         <Feather name="user" color={color} size={24} />
@@ -124,7 +160,7 @@ const TabNavigator = () => {
     );
 };
 
-const HomeStack = () => {
+const HomeStack = (props) => {
     return (
         <Stack.Navigator>
             <Stack.Screen 
@@ -135,8 +171,6 @@ const HomeStack = () => {
         </Stack.Navigator>
     )
 }
-
-
 
 
 const ClosetStack = () => {

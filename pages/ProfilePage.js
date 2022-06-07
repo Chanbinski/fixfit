@@ -5,9 +5,11 @@ import Divider from '../components/PickerModal/components/divider/Divider';
 import { Header } from '../navigation/Header';
 import React, { useState } from 'react';
 
+import { doc, getDoc } from "firebase/firestore";
+
 const arr = [1,2,3];
 
-const ProfilePage = () => {
+const ProfilePage = (props) => {
   const navigation = useNavigation();
   const [count, setCount] = useState(-1);
 
@@ -25,7 +27,7 @@ const ProfilePage = () => {
       <Header />
       <View style={styles.container}>
         <Avatar.Image size={100} source={require('../assets/adaptive-icon.png')} style={styles.avatar}/>
-        <Text style={styles.profilename}> Chanbin Park </Text>
+        <Text style={styles.profilename}>{props.username}</Text>
         <Text style={styles.button}>Cal 25+2</Text>
         <TouchableOpacity
           style={styles.buttonfilled}

@@ -1,8 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
-import { doc, setDoc } from "firebase/firestore"; 
-
+import { collection, setDoc, doc } from 'firebase/firestore'
+import { db } from '../config/firebase'
 
 const auth = getAuth();
 
@@ -14,47 +14,49 @@ const SignupPage = ({navigation}) => {
         name: '',
         username: '',
         confirmedPassword: '',
-        error: ''
     })
 
+    const [disabled, setDisabled] = React.useState(true);
+
     async function signup() {
-        if (value.email === '' || value.name === '' || value.username === '' || value.password === '') {
-            setValue({
-              ...value,
-              error: 'There are mandatory fields you didn\'t fill out.'
-            })
-            return;
-        } 
-
-        if (value.password !== value.confirmedPassword) {
-            setValue({
-              ...value,
-              error: 'Passwords don\'t match.'
-            })
-            return;
-        }
-
-        // try {
-        //   await setDoc(doc(db, "users", value.email), {
-        //     name: value.name,
-        //     username: value.username,
-        //   });
-        // } catch (e) {
-        //   setValue({
-        //     ...value,
-        //     error: error.message,
-        //   })
-        // }
-
+      if (value.email === '' || value.password === '' || value.name === '' || value.username === '' || value.confirmedPassword === '') {
+        Alert.alert(
+          "Empty field",
+          "Please fill out every field.",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        );
+      } else if (value.password !== value.confirmedPassword) {
+        Alert.alert(
+          "Passwords do not match",
+          "Please try again.",
+          [
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+          ]
+        );
+      } else {
         try {
           await createUserWithEmailAndPassword(auth, value.email, value.password);
-          // navigation.navigate('Login')
-        } catch (error) {
-          setValue({
-            ...value,
-            error: error.message,
-          })
+          try {
+            await setDoc(doc(db, "users", value.email), {
+              name: value.name,
+              username: value.username
+            })
+          }
+          catch(error) {
+          }
         }
+        catch(error) {
+          Alert.alert(
+            "Sign up unsuccessful",
+            "Please sign up again",
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ]
+          );
+        }
+      }
     }
     
     return (
@@ -99,6 +101,7 @@ const SignupPage = ({navigation}) => {
           </TextInput>
           <TouchableOpacity
             style={styles.buttonfilled}
+            activeOpacity={disabled ? 0.7 : 1} 
             onPress={signup}
           >
             <Text 

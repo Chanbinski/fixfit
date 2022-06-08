@@ -9,13 +9,7 @@ import PickerModal from '../components/PickerModal/PickerModal';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 
-<<<<<<< HEAD
-import { doc, getDoc } from "firebase/firestore";
-
-const arr = [1,2,3];
-=======
 const auth = getAuth();
->>>>>>> david
 
 const ProfilePage = (props) => {
   const navigation = useNavigation();

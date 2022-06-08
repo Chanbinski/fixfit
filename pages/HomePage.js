@@ -1,6 +1,4 @@
-
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, StatusBar, SafeAreaView } from 'react-native';
 import { Header } from '../navigation/Header';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
@@ -14,11 +12,11 @@ const auth = getAuth();
 const HomePage = () => {
 
   return (
-    <>
+    <SafeAreaView>
+      <StatusBar />
       <Header />
       <View style={styles.container}>
         <Text>Recommendations</Text>
-        <StatusBar style="auto" />
         {/* <Canvas style={{ background: "#171717" }}>
           <Suspense fallback={null}>
             <Human />
@@ -26,7 +24,7 @@ const HomePage = () => {
         </Canvas> */}
         <Button title="Sign Out" onPress={() => signOut(auth)} />
       </View>
-    </>
+    </SafeAreaView>
   );
 }
 

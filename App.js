@@ -1,7 +1,6 @@
 import React from 'react';
 import './config/firebase';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, LogBox } from 'react-native';
+import { StyleSheet, LogBox, StatusBar } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -20,7 +19,8 @@ const App = () => {
   const { user } = useAuthentication();
 
   return (
-    <NavigationContainer>
+    <>
+      <NavigationContainer>
       <Stack.Navigator> 
       {
         user? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
@@ -35,6 +35,7 @@ const App = () => {
       }
       </Stack.Navigator>
     </NavigationContainer>
+    </>
   )
 }
 

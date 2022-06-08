@@ -43,6 +43,7 @@ const TabNavigator = () => {
                 setUsername(docSnap.data().username);
             } else {
                 // Cannot fetch data
+                console.log("Cannot load user.")
             }
         }
         try {

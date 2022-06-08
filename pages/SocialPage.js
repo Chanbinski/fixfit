@@ -211,24 +211,26 @@ const styles = StyleSheet.create({
 
 const headerStyles = StyleSheet.create({
   header: {
-      width: '100%',
-      height: '13%',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      backgroundColor: '#fff',
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    height: '12%',
+    backgroundColor: '#fff',
   },
   headerText: {
       fontWeight: 'bold',
       fontSize: 30,
       color: '#000',
-      position: 'absolute',
-      left: 10,
+      flexDirection: "row", 
+      alignItems: "center", 
+      paddingLeft: 8,
+      flex: 1,
       top: '55%',
   },
   icon: {
-    position: 'absolute',
-    right: 20,
-    top:'55%'
+    flexDirection: "row", 
+    alignItems: "center", 
+    top:'57%',
+    paddingRight: 8
   },
 });
 

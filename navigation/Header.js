@@ -23,23 +23,23 @@ export function Header () {
 
 const styles = StyleSheet.create({
     header: {
-        width: '100%',
-        height: '13%',
         flexDirection: 'row',
-        justifyContent: 'center',
+        paddingHorizontal: 12,
+        height: '12%',
         backgroundColor: '#fff',
-    },
-    headerText: {
-        fontWeight: '400',
+      },
+      headerText: {
+        flexDirection: "row", 
+        alignItems: "center", 
+        flex: 1,
         fontSize: 40,
-        color: '#000',
-        position: 'absolute',
-        left: 10,
+        paddingLeft: 8,
         top: '55%',
-    },
-    icon: {
-        position: 'absolute',
-        right: 20,
-        top:'50%'
-    }
+        fontWeight: '400',
+      },
+      icon: {
+        flexDirection: "row", 
+        alignItems: "center", 
+        top:'62%'
+      },
 });

@@ -4,26 +4,53 @@ import { Avatar} from 'react-native-paper';
 import Divider from '../components/PickerModal/components/divider/Divider';
 import { Header } from '../navigation/Header';
 import React, { useState } from 'react';
+import {  MaterialIcons } from '@expo/vector-icons';
+import PickerModal from '../components/PickerModal/PickerModal';
+import { getAuth, signOut } from 'firebase/auth';
+import { useAuthentication } from '../utils/hooks/useAuthentication';
 
-const arr = [1,2,3];
+const auth = getAuth();
 
 const ProfilePage = () => {
   const navigation = useNavigation();
-  const [count, setCount] = useState(-1);
-
-  const getPics = () => {
-    setCount(count + 1)
-    return PICTURES
-      .slice(count*3, count*3 + 3 + 1)
-      .map(item => {
-        return <Image style={styles.image} source={{uri: 'https://picsum.photos/id/1006/200'}} />
-      })
-  }
+  const [isVisible, setVisible] = useState(false);
 
   return (
     <>
-      <Header />
-      <View style={styles.container}>
+      <View style={styles.header}>
+            <Text style={styles.headerText}> fixfit </Text>
+            <MaterialIcons name='menu' size={40} style={styles.icon} onPress={() => setVisible(true)} />
+            <PickerModal
+          title="You can either take a picture or select one from your album."
+          isVisible={isVisible}
+          data={["About", "Sign out"]}
+          onPress={(selectedItem) => {
+            if (selectedItem === 'About') {
+              navigation.navigate('CameraCloset');
+              setVisible(false);
+            } else {
+              setVisible(false);
+              signOut(auth);
+            }
+          }}
+          onCancelPress={() => {
+            setVisible(false);
+          }}
+          onBackdropPress={() => {
+            setVisible(false);
+          }}
+        />
+        </View>
+      <ProfileBody />
+    </>
+  );
+}
+
+const ProfileBody = () => {
+  const navigation = useNavigation();
+  
+  return (
+    <View style={styles.container}>
         <Avatar.Image size={100} source={require('../assets/adaptive-icon.png')} style={styles.avatar}/>
         <Text style={styles.profilename}> Chanbin Park </Text>
         <Text style={styles.button}>Cal 25+2</Text>
@@ -39,22 +66,10 @@ const ProfilePage = () => {
             <Text style={{fontSize: 16}} onPress={() => {navigation.navigate('Closet')}}> See more </Text>
           </TouchableOpacity>
         </View>
-        {/* <View style={styles.displayBar}>
-          <Image style={styles.image} source={{uri: 'https://picsum.photos/id/1002/200'}} />
-          <Image style={styles.image} source={{uri: 'https://picsum.photos/id/1006/200'}} />
-          <Image style={styles.image} source={{uri: 'https://picsum.photos/id/1008/200'}} />
-        </View>
-        <View style={styles.displayBar}>
-          <Image style={styles.image} source={{uri: 'https://picsum.photos/id/1002/200'}} />
-          <Image style={styles.image} source={{uri: 'https://picsum.photos/id/1006/200'}} />
-          <Image style={styles.image} source={{uri: 'https://picsum.photos/id/1008/200'}} />
-        </View> */}
-        <ScrollView style={{width: "100%", }}>
+        <ScrollView style={styles.displayBox}>
           <Images />
         </ScrollView>
-        
       </View>
-    </>
   );
 }
 
@@ -65,7 +80,7 @@ const Images = () => {
   for (var i = 0; i < len; i+= 3) {
     if (len - i >= 3) {
       results.push(
-        <View style={styles.displayBar}>
+        <View style={styles.row}>
           <Image style={styles.image} source={{uri: PICTURES[i].imageUrl}} />
           <Image style={styles.image} source={{uri: PICTURES[i+1].imageUrl}} />
           <Image style={styles.image} source={{uri: PICTURES[i+2].imageUrl}} />
@@ -73,14 +88,14 @@ const Images = () => {
       );
     } else if (len - i == 2) {
       results.push(
-        <View style={styles.displayBar}>
+        <View style={styles.row}>
           <Image style={styles.image} source={{uri: PICTURES[i].imageUrl}} />
           <Image style={styles.image} source={{uri: PICTURES[i+1].imageUrl}} />
         </View>
       );
     } else {
       results.push(
-        <View style={styles.displayBar}>
+        <View style={styles.row}>
           <Image style={styles.image} source={{uri: PICTURES[i].imageUrl}} />
         </View>
       );
@@ -101,6 +116,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    height: '12%',
+    backgroundColor: '#fff',
+  },
+  headerText: {
+    flexDirection: "row", 
+    alignItems: "center", 
+    flex: 1,
+    fontSize: 40,
+    paddingLeft: 8,
+    top: '55%',
+    fontWeight: '400',
+  },
+  icon: {
+    flexDirection: "row", 
+    alignItems: "center", 
+    top:'62%',
+    paddingRight: 8
   },
   avatar: {
     marginBottom: '5%',
@@ -123,7 +159,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 5,
     fontSize: 15,
-    marginBottom: 12,
+    marginBottom: 10,
   }, 
   buttonfilled: {
     alignItems: 'center',
@@ -135,7 +171,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     boxShadow: 10,
   },
- 
   textLeft: {
     flexDirection: "row", 
     alignItems: "center", 
@@ -144,20 +179,28 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
   },
   displayBar: {
-    flex: 3,
     flexDirection: 'row',
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
+  displayBox: {
+    flex: 3,
+    marginHorizontal: 'auto',
+    width: '100%',
+  },
   image: {
-    width: 100,
+    width: 105,
     flexDirection: "row", 
     alignItems: "center", 
-    flex: 1,
-    marginLeft: '2%',
-    marginRight: '2%',
+    marginLeft: '3%',
+    marginRight: '3%',
     aspectRatio: 1/1,
   },
+  row: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 4
+  }
 });
 
 const PICTURES = [
@@ -176,7 +219,15 @@ const PICTURES = [
   {
     imageUrl: 'https://picsum.photos/id/1006/200',
   },
-
+  {
+    imageUrl: 'https://picsum.photos/id/1008/200',
+  },
+  {
+    imageUrl: 'https://picsum.photos/id/1002/200',
+  },
+  {
+    imageUrl: 'https://picsum.photos/id/1006/200',
+  },
 ];
 
 export default ProfilePage;

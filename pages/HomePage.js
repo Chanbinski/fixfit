@@ -11,13 +11,13 @@ import { doc, getDoc } from "firebase/firestore";
 
 const auth = getAuth();
 
-const HomePage = (props) => {
+const HomePage = () => {
 
   return (
     <>
       <Header />
       <View style={styles.container}>
-        <Text>{props.name}</Text>
+        <Text>Recommendations</Text>
         <StatusBar style="auto" />
         {/* <Canvas style={{ background: "#171717" }}>
           <Suspense fallback={null}>

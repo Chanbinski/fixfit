@@ -24,10 +24,12 @@ const ProfilePage = (props) => {
 
   return (
     <>
-      <Header />
+      <View style={headerStyles.header}>
+        <Text style={headerStyles.headerText}> {props.username} </Text>
+      </View>
       <View style={styles.container}>
         <Avatar.Image size={100} source={require('../assets/adaptive-icon.png')} style={styles.avatar}/>
-        <Text style={styles.profilename}>{props.username}</Text>
+        <Text style={styles.profilename}>{props.name}</Text>
         <Text style={styles.button}>Cal 25+2</Text>
         <TouchableOpacity
           style={styles.buttonfilled}
@@ -97,6 +99,29 @@ const Images = () => {
     </>
   );
 }
+
+const headerStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  header: {
+      width: '100%',
+      height: '100%',
+      height: '13%',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+  },
+  headerText: {
+      fontWeight: 'bold',
+      fontSize: 30,
+      color: '#000',
+      position: 'absolute',
+      left: 10,
+      top: '55%',
+  }
+});
 
 const styles = StyleSheet.create({
   container: {

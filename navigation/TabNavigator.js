@@ -53,7 +53,7 @@ const TabNavigator = () => {
     });
 
     const ProfilePageWithProps = () => { // The downside of react...
-        return <ProfilePage username={username}/>
+        return <ProfilePage name={name} username={username}/>
     }
 
     return (

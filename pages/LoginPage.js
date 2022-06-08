@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Input, TextInput, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Input, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const auth = getAuth();
@@ -13,22 +13,17 @@ const Login = ({navigation}) => {
     })
 
     async function login() {
-        if (value.email === '' || value.password === '') {
-            setValue({
-              ...value,
-              error: 'Email and password are mandatory.'
-            })
-            return;
-        }
-
         try {
             await signInWithEmailAndPassword(auth, value.email, value.password);
-          } catch (error) {
-            setValue({
-              ...value,
-              error: error.message,
-            })
-          }
+        } catch (error) {
+            Alert.alert(
+              "Invalid email or password",
+              "Please try again.",
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ]
+            );
+        }
     }
 
     return (
@@ -37,7 +32,7 @@ const Login = ({navigation}) => {
           <Text style={styles.signintitle}>fixfit</Text>
           <TextInput
             style={styles.input}
-            placeholder="Username"
+            placeholder="Email"
             value={value.email}
             onChangeText={(text) => setValue({ ...value, email: text })}
           >
@@ -51,22 +46,36 @@ const Login = ({navigation}) => {
           >
           </TextInput>
           <TouchableOpacity
-            style={styles.buttonfilled}
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '80%',
+              height: 40,
+              borderRadius: 5,
+              backgroundColor:'#54BAB9',
+              marginTop: 10,
+              marginBottom: 20,
+              boxShadow: 10,
+              opacity: value.username === '' || value.password === '' ? 0.3 : 1
+            }}
+            disabled={value.username === '' || value.password === ''}
             onPress={login}
           >
-            <Text>Login</Text>
+            <Text 
+              style={{ fontSize: 16 }}
+            >Login</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
           >
-            <Text style={{color: '#808080'}}>Forgot Password?</Text>
+            <Text style={{fontSize: 16, color: '#808080'}}>Forgot Password?</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
           >
             <Text 
               onPress={() => navigation.navigate('Signup')}
-              style={{color: '#808080'}}
+              style={{fontSize: 16, color: '#808080'}}
             >Sign Up for fixfit</Text>
           </TouchableOpacity>
         </SafeAreaView>
@@ -83,20 +92,15 @@ const Login = ({navigation}) => {
     },
     signintitle: {
       fontSize: 70,
-      fontWeight: '300',
+      fontWeight: '800',
       marginBottom: '10%',
       marginTop: '50%'
-    }, 
-    signuptitle: {
-      fontSize: 30,
-      fontWeight: '700',
-      marginBottom: '10%',
-      marginTop: '30%'
     }, 
     input: {
       width: '80%',
       height: 40,
       margin: 12,
+      fontSize: 16,
       borderBottomWidth: 1,
       borderRadius: 5,
       borderColor: '#BEBEBE',

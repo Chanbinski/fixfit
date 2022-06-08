@@ -19,15 +19,7 @@ const SignupPage = ({navigation}) => {
     const [disabled, setDisabled] = React.useState(true);
 
     async function signup() {
-      if (value.email === '' || value.password === '' || value.name === '' || value.username === '' || value.confirmedPassword === '') {
-        Alert.alert(
-          "Empty field",
-          "Please fill out every field.",
-          [
-            { text: "OK", onPress: () => console.log("OK Pressed") }
-          ]
-        );
-      } else if (value.password !== value.confirmedPassword) {
+      if (value.password !== value.confirmedPassword) {
         Alert.alert(
           "Passwords do not match",
           "Please try again.",
@@ -45,6 +37,13 @@ const SignupPage = ({navigation}) => {
             })
           }
           catch(error) {
+            Alert.alert(
+              "Error creating a new account",
+              "Please try again.",
+              [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+              ]
+            );
           }
         }
         catch(error) {
@@ -100,11 +99,23 @@ const SignupPage = ({navigation}) => {
           >
           </TextInput>
           <TouchableOpacity
-            style={styles.buttonfilled}
-            activeOpacity={disabled ? 0.7 : 1} 
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '80%',
+              height: 40,
+              borderRadius: 5,
+              backgroundColor:'#54BAB9',
+              marginTop: 10,
+              marginBottom: 20,
+              boxShadow: 10,
+              opacity: value.name === '' || value.username === '' || value.email === '' || value.password === '' || value.confirmedPassword === '' ? 0.3 : 1
+            }}
+            disabled={value.name === '' || value.username === '' || value.email === '' || value.password === '' || value.confirmedPassword === ''}
             onPress={signup}
           >
-            <Text 
+            <Text
+              style={{fontSize: 16}} 
             >Sign Up</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -112,7 +123,7 @@ const SignupPage = ({navigation}) => {
           >
             <Text 
               onPress={() => navigation.navigate('Login')}
-              style={{color: '#808080'}}
+              style={{fontSize: 16, color: '#808080'}}
             >Already have an account?</Text>
           </TouchableOpacity>
         </SafeAreaView>
@@ -127,14 +138,8 @@ const SignupPage = ({navigation}) => {
       alignItems: 'center',
   
     },
-    signintitle: {
-      fontSize: 70,
-      fontWeight: '300',
-      marginBottom: '10%',
-      marginTop: '50%'
-    }, 
     signuptitle: {
-      fontSize: 30,
+      fontSize: 32,
       fontWeight: '700',
       marginBottom: '10%',
       marginTop: '30%'
@@ -147,6 +152,7 @@ const SignupPage = ({navigation}) => {
       borderRadius: 5,
       borderColor: '#BEBEBE',
       padding: 10,
+      fontSize: 16
     },
     buttonfilled: {
       alignItems: 'center',

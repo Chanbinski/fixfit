@@ -1724,7 +1724,7 @@
   "resolved" "https://registry.npmjs.org/@firebase/storage-types/-/storage-types-0.6.0.tgz"
   "version" "0.6.0"
 
-"@firebase/storage@0.9.6":
+"@firebase/storage@^0.9.6", "@firebase/storage@0.9.6":
   "integrity" "sha512-q8/s3qFbFl+AlKbyEtGA7FRVhcMu3NKPqHueBTn5XSI0B3bfxptBcDJMb9txs69ppve6P3jrK1//TEWpjTGJUg=="
   "resolved" "https://registry.npmjs.org/@firebase/storage/-/storage-0.9.6.tgz"
   "version" "0.9.6"

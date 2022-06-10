@@ -1,14 +1,17 @@
 import React from 'react';
 import './config/firebase';
-import { StyleSheet, LogBox, StatusBar } from 'react-native';
+import { StyleSheet, LogBox, StatusBar, Button } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabNavigator from './navigation/TabNavigator';
 import AuthStack from './navigation/AuthStack';
 import { useAuthentication } from './utils/hooks/useAuthentication';
-
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 const Stack = createNativeStackNavigator();
+
+import ImageSocial from './components/Social/ImageSocial';
 
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -21,19 +24,19 @@ const App = () => {
   return (
     <>
       <NavigationContainer>
-      <Stack.Navigator> 
-      {
-        user? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
-          <Stack.Group>
-            <Stack.Screen name="Tab" component={TabNavigator} options={{ headerShown: false }} />
-          </Stack.Group>
-        ) : (
-          <Stack.Group>
-            <Stack.Screen name="Auth" component={AuthStack} options={{ headerShown: false }} />
-          </Stack.Group>
-        )
-      }
-      </Stack.Navigator>
+        <Stack.Navigator> 
+        {
+          user? ( //change to true to render home screen (true = user is logged in, false = user is not logged in)
+            <Stack.Group>
+              <Stack.Screen name="Tab" component={TabNavigator} options={{ headerShown: false }} />
+            </Stack.Group>
+          ) : (
+            <Stack.Group>
+              <Stack.Screen name="Auth" component={AuthStack} options={{ headerShown: false }} />
+            </Stack.Group>
+          )
+        }
+        </Stack.Navigator>
     </NavigationContainer>
     </>
   )
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: '6%',
     marginBottom: 25,
-  }
+  },
 });
 
 export default App;

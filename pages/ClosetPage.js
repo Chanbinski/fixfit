@@ -140,7 +140,7 @@ const headerStyles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     height: '12%',
     backgroundColor: '#fff',
   },
@@ -150,7 +150,7 @@ const headerStyles = StyleSheet.create({
       color: '#000',
       flexDirection: "row", 
       alignItems: "center", 
-      paddingLeft: 8,
+      paddingLeft: 0,
       flex: 1,
       top: '55%',
   },
@@ -158,7 +158,7 @@ const headerStyles = StyleSheet.create({
     flexDirection: "row", 
     alignItems: "center", 
     top:'57%',
-    paddingRight: 8
+    paddingRight: 0
   },
 });
 

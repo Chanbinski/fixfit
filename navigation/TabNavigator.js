@@ -43,6 +43,8 @@ const TabNavigator = () => {
                 setUsername(docSnap.data().username);
             } else {
                 // Cannot fetch data
+                setName('unknown');
+                setUsername('unknown');
                 console.log("Cannot load user.")
             }
         }
@@ -85,7 +87,6 @@ const TabNavigator = () => {
                     ),
                 })}  
             />
-            
             <Tab.Screen 
                 name="Social" 
                 component={SocialPage} 
@@ -104,15 +105,28 @@ const TabNavigator = () => {
                     ),
                 })} 
             />
-            {/* <Tab.Screen 
-                name="CameraComp" 
-                component={CameraComp} 
-                options={{
-                    headerShown: false,
-                    tabBarStyle: { display: "none" },
+            <Stack.Screen 
+                name="CameraSocial" 
+                component={CameraSocial}
+                options={({route}) => ({
+                    tabBarIcon: ({color, size}) => (
+                        <Feather name="camera" color={color} size={24} />
+                    ),
+                    tabBarStyle: { display: 'none', },
                     tabBarButton: (prop) => null,
-                }} 
-            /> */}
+                })} 
+            />
+            <Stack.Screen 
+                name="ImageSocial" 
+                component={ImageSocial}
+                options={({route}) => ({
+                    tabBarIcon: ({color, size}) => (
+                        <Feather name="camera" color={color} size={24} />
+                    ),
+                    tabBarStyle: { display: 'none' },
+                    tabBarButton: (prop) => null,
+                })} 
+            />
             <Tab.Screen 
                 name="CameraCloset" 
                 component={CameraCloset}
@@ -125,30 +139,8 @@ const TabNavigator = () => {
                 })} 
             />
             <Tab.Screen 
-                name="CameraSocial" 
-                component={CameraSocial}
-                options={({route}) => ({
-                    tabBarIcon: ({color, size}) => (
-                        <Feather name="camera" color={color} size={24} />
-                    ),
-                    tabBarStyle: { display: 'none', },
-                    tabBarButton: (prop) => null,
-                })} 
-            />
-            <Tab.Screen 
                 name="ImageCloset" 
                 component={ImageCloset}
-                options={({route}) => ({
-                    tabBarIcon: ({color, size}) => (
-                        <Feather name="camera" color={color} size={24} />
-                    ),
-                    tabBarStyle: { display: 'none' },
-                    tabBarButton: (prop) => null,
-                })} 
-            />
-            <Tab.Screen 
-                name="ImageSocial" 
-                component={ImageSocial}
                 options={({route}) => ({
                     tabBarIcon: ({color, size}) => (
                         <Feather name="camera" color={color} size={24} />
@@ -172,7 +164,6 @@ const HomeStack = (props) => {
         </Stack.Navigator>
     )
 }
-
 
 const ClosetStack = () => {
     return (

@@ -12,8 +12,7 @@ const auth = getAuth();
 const HomePage = () => {
 
   return (
-    <SafeAreaView>
-      <StatusBar />
+    <>
       <Header />
       <View style={styles.container}>
         <Text>Recommendations</Text>
@@ -24,7 +23,7 @@ const HomePage = () => {
         </Canvas> */}
         <Button title="Sign Out" onPress={() => signOut(auth)} />
       </View>
-    </SafeAreaView>
+    </>
   );
 }
 

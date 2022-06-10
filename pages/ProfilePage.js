@@ -41,12 +41,12 @@ const ProfilePage = (props) => {
           }}
         />
         </View>
-      <ProfileBody />
+      <ProfileBody name={props.name} />
     </>
   );
 }
 
-const ProfileBody = () => {
+const ProfileBody = (props) => {
   const navigation = useNavigation();
   
   return (

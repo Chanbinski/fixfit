@@ -38,6 +38,8 @@ const SocialPage = () => {
     if (!result.cancelled) {
       setImage(result);
       setPreview(true);
+    } else {
+      resetPicture()
     }
   };
 
@@ -53,15 +55,15 @@ const SocialPage = () => {
           navigation.navigate('ImageSocial', {
             photo: image, 
           }),
-          console.log(image),
           resetPicture()
       ) : (
         <>
      <View style={headerStyles.header}>
         <Text style={headerStyles.headerText}> Social </Text>
-        <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/>
+        {/* <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/> */}
+        <Ionicons name='add-circle-outline' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/>
         <PickerModal
-          title="You can either take a picture or select one from your album."
+          title="Upload A Post"
           isVisible={isVisible}
           data={["Take a photo", "Select from album"]}
           onPress={(selectedItem) => {
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
 const headerStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     height: '12%',
     backgroundColor: '#fff',
   },
@@ -222,7 +224,7 @@ const headerStyles = StyleSheet.create({
       color: '#000',
       flexDirection: "row", 
       alignItems: "center", 
-      paddingLeft: 8,
+      paddingLeft: 0,
       flex: 1,
       top: '55%',
   },
@@ -230,7 +232,7 @@ const headerStyles = StyleSheet.create({
     flexDirection: "row", 
     alignItems: "center", 
     top:'57%',
-    paddingRight: 8
+    paddingRight: 0
   },
 });
 

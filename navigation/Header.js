@@ -24,7 +24,7 @@ export function Header () {
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
-        paddingHorizontal: 12,
+        paddingHorizontal: 10,
         height: '12%',
         backgroundColor: '#fff',
     },
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         alignItems: "center", 
         flex: 1,
         fontSize: 40,
-        paddingLeft: 8,
+        paddingLeft: 0,
         top: '55%',
         fontWeight: '800',
       },

@@ -4,6 +4,9 @@ import { Camera, CameraType } from 'expo-camera';
 import {  MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import PickerModal from '../PickerModal/PickerModal';
+import { useAuthentication } from '../../utils/hooks/useAuthentication';
+import { storage } from '../../config/firebase';
+import { ref, uploadBytesResumable, uploadBytes } from "firebase/storage";
 
 
 export default function CameraComp() {
@@ -46,7 +49,7 @@ export default function CameraComp() {
     return <Text> No access to camera </Text>;
   }
 
-  const savePhoto = ({category}) => {};
+  
 
   const retakePicture = () => {
     setChooseImage(null);
@@ -59,7 +62,7 @@ export default function CameraComp() {
             <CameraPreview 
               photo={chooseImage} 
               retakePicture={retakePicture} 
-              savePhoto={savePhoto} />
+              setChooseImage={setChooseImage} />
           ) : (
       <Camera style={styles.camera} type={type} ref={cameraRef}>
         <View style={styles.flipContainer}>
@@ -97,14 +100,31 @@ export default function CameraComp() {
   );
 }
 
-const CameraPreview = ({photo, retakePicture, savePhoto}) => {
-  console.log('Success', photo)
+const CameraPreview = ({photo, retakePicture, setChooseImage}) => {
   const [isVisible, setVisible] = useState(false);
   const navigation = useNavigation();
+  const { user } = useAuthentication();
+
+  const savePhoto = async (category) => {
+    const dateTime = Date.now() + '';
+    const imageRef = ref(storage, `${user.email}/${category}/${dateTime}`);
+
+    const img = await fetch(photo.uri);
+    const bytes = await img.blob();
+
+    uploadBytes(imageRef, bytes).then((snapshot) => {
+      console.log("Upload Successful.");
+    });
+    
+    setChooseImage(null);
+    navigation.navigate('Tops');
+  }
+  
+
   return (
     <View style={styles.imagePrev}>
       <ImageBackground
-        source={{uri: photo && photo.uri}}
+        source={{uri: photo.uri}}
         style={{ flex: 1 }}>
         <View style={styles.flipContainer}>
           <TouchableOpacity onPress={() => {navigation.navigate('Closet');}}>

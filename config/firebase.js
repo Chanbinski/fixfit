@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import Constants from 'expo-constants';
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: Constants.manifest?.extra?.firebaseApiKey,
@@ -16,3 +17,4 @@ export const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 
+export const storage = getStorage(app, "gs://fixfit-7fd47.appspot.com");

@@ -24,8 +24,6 @@ import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { doc, getDoc } from "firebase/firestore";
 import { db } from '../config/firebase'
 
-import { Alert } from 'react-native'
-
 const TabNavigator = () => {
 
     const { user } = useAuthentication();
@@ -34,7 +32,6 @@ const TabNavigator = () => {
     const [username, setUsername] = useState('');
 
     useEffect(() => {
-
         const fetchData = async () => {
             const docRef = doc(db, "users", user.email);
             const docSnap = await getDoc(docRef);

@@ -38,6 +38,8 @@ const SocialPage = () => {
     if (!result.cancelled) {
       setImage(result);
       setPreview(true);
+    } else {
+      resetPicture();
     }
   };
 

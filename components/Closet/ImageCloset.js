@@ -9,14 +9,28 @@ import {
 } from 'react-native';
 import {MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../PickerModal/PickerModal';
+import { useAuthentication } from '../../utils/hooks/useAuthentication';
+import { storage } from '../../config/firebase';
+import { ref, uploadBytes } from "firebase/storage";
 
 
 const ImageCloset = ({route}) => {
     const {photo} = route.params;
     const navigation = useNavigation();
     const [isVisible, setVisible] = useState(false);
+    const { user } = useAuthentication();
     
-    const savePhoto = ({category}) => {};
+    const savePhoto = async (category) => {
+      const dateTime = Date.now() + '';
+      const imageRef = ref(storage, `${user.email}/${category}/${dateTime}`);
+  
+      const img = await fetch(photo.uri);
+      const bytes = await img.blob();
+  
+      uploadBytes(imageRef, bytes).then((snapshot) => {
+        console.log("Upload Successful.");
+      });
+    }
 
     console.log('Previewing', photo)
     return (

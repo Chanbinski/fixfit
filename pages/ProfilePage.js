@@ -9,6 +9,7 @@ import PickerModal from '../components/PickerModal/PickerModal';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 
+
 const auth = getAuth();
 
 const ProfilePage = (props) => {
@@ -18,10 +19,10 @@ const ProfilePage = (props) => {
   return (
     <>
       <View style={styles.header}>
-        <Text style={headerStyles.headerText}> {props.username} </Text>
-            <MaterialIcons name='menu' size={40} style={styles.icon} onPress={() => setVisible(true)} />
-            <PickerModal
-          title="You can either take a picture or select one from your album."
+        <Text style={styles.headerText}> {props.username} </Text>
+        <MaterialIcons name='menu' size={30} style={styles.icon} onPress={() => setVisible(true)} />
+        <PickerModal
+          title= "You can either take a picture or select one from your album."
           isVisible={isVisible}
           data={["About", "Sign out"]}
           onPress={(selectedItem) => {
@@ -102,8 +103,6 @@ const Images = () => {
     }
   }
 
-  console.log(results);
-
   return (
     <>
       {results}
@@ -150,9 +149,9 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     alignItems: "center", 
     flex: 1,
-    fontSize: 40,
+    fontSize: 20,
     paddingLeft: 8,
-    top: '55%',
+    top: '65%',
     fontWeight: '400',
   },
   icon: {

@@ -7,86 +7,50 @@ import {
   ImageBackground,
   Button,
   Text,
-  TouchㅌableOpacity,
+  TouchableOpacity,
   TextInput,
   ScrollView
 } from 'react-native';
-import { ref, uploadBytes, uploadString } from "firebase/storage";
+import { ref, uploadBytes, uploadBytesResumable, uploadString, getDownloadURL } from "firebase/storage";
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useAuthentication } from '../../utils/hooks/useAuthentication';
 import { storage } from '../../config/firebase'
 
 
 const ImageSocial = ({route}) => {
-    const { photo } = route.params;
-    const [ description, setDescription ] = useState('');
     const navigation = useNavigation();
+    const { photo } = route.params;
+    const [ caption, setCaption ] = useState('');
+    const [ uploading, setUploading ] = useState(false);
+    //const [ percent, setPercent ] = useState(0);
+
     const { user } = useAuthentication();
 
-    async function uploadPost(uri) {
+    const sharePost = async () => {
 
-      const blob = await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-          resolve(xhr.response);
-        };
-        xhr.onerror = function (e) {
-          console.log(e);
-          reject(new TypeError("Network request failed"));
-        };
-        xhr.responseType = "blob";
-        xhr.open("GET", uri, true);
-        xhr.send(null);
-      });
-    
+      setUploading(true);
+
       const dateTime = Date.now() + '';
       const imageRef = ref(storage, `${user.email}/images/${dateTime}`);
-      const descriptionRef = ref(storage, `${user.email}/description/${dateTime}`);
-      
-      const result = await uploadBytes(imageRef, blob);
-      const result2 = await uploadString(descriptionRef, description);
-    
-      // We're done with the blob, close and release it
-      blob.close();
-      setDescription('');
-      console.log("Upload Successful.")
-      //return await getDownloadURL(fileRef);
-    }
+      const captionRef = ref(storage, `${user.email}/caption/${dateTime}`);
 
-    const sharePost = () => {
+      const img = await fetch(photo.uri);
+      const bytes = await img.blob();
+      const uploadTask = await uploadBytesResumable(imageRef, bytes);
 
-      uploadPost(photo.uri);
-      navigation.navigate("Social");
-      
-      // const dateTime = Date.now() + '';
-      // const imageRef = ref(storage, `${user.email}/images/${dateTime}`)
-      // const descriptionRef = ref(storage, `${description}/postDescription`)
+      navigation.navigate("Social"); //use with await
 
-      // const metadata = {
-      //   contentType: 'image/jpg',
-      // };
-
-      // const blob = await new Promise((resolve, reject) => {
-      //   const xhr = new XMLHttpRequest();
-      //   xhr.onload = function () {
-      //     resolve(xhr.response);
-      //   };
-      //   xhr.onerror = function (e) {
-      //     console.log(e);
-      //     reject(new TypeError("Network request failed"));
-      //   };
-      //   xhr.responseType = "blob";
-      //   xhr.open("GET", photo.uri, true);
-      //   xhr.send(null);
-      // });
-    
-      // uploadBytes(imageRef, blob, metadata).then((snapshot) => {
-      //   uploadString(descriptionRef, description).then((snapshot) => {
-      //     console.log("Post successfully uploaded.");
-      //     navigation.navigate('Social');
-      //   });
-      // });
-
+      //Progress bar sometimes working, not all the time
+      // uploadTask.on('state_changed',
+      //   (snapshot) => {
+      //     setPercent(Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100 / 100));
+      //   },
+      //   (error) => {
+      //     alert(error);
+      //   },
+      //   () => {
+      //     navigation.navigate("Social");
+      //   })
     }
 
     const PostHeader = () => {
@@ -111,6 +75,9 @@ const ImageSocial = ({route}) => {
     return (
       <SafeAreaView style={styles.imagePrev}>
         <PostHeader />
+          <View style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
+              { uploading && <Text style={{ color: 'gray' }}>Uploading in progress...</Text> }
+          </View>
         <ScrollView keyboardShouldPersistTaps='handled'>
           <View 
             style={styles.comment}
@@ -124,7 +91,7 @@ const ImageSocial = ({route}) => {
                 multiline={true}
                 textAlignVertical="top"
                 placeholder="Comment..."
-                onChangeText={(text) => setDescription(text)}
+                onChangeText={(text) => setCaption(text)}
             />
           </View> 
         </ScrollView>
@@ -208,6 +175,11 @@ const styles = StyleSheet.create({
       height: 95,
       borderBottomColor: '#808080',
       borderBottomWidth: StyleSheet.hairlineWidth,
+    },
+    wheel: {
+        marginVertical: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
   });
 

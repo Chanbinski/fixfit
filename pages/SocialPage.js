@@ -15,17 +15,50 @@ import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import PickerModal from '../components/PickerModal/PickerModal';
 import * as ImagePicker from 'expo-image-picker';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { storage } from '../config/firebase'
+import { listAll, ref, getDownloadURL } from 'firebase/storage'
+import { useAuthentication } from '../utils/hooks/useAuthentication';
 
+const SocialPage = (props) => {
 
-const SocialPage = () => {
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isVisible, setVisible] = useState(false);
+  const [urls, setUrls] = useState([]);
 
+  useEffect(() => {
+    getImages();
+  }, [])
+
+  const getImages = () => {
+    const listRef = ref(storage, `${props.email}/images`)
+    setUrls([]);
+    listAll(listRef).then((res) => {
+        res.items.forEach((itemRef) => {           
+            const path = itemRef._location.path_;
+            const urlRef = ref(storage, path);
+            getDownloadURL(urlRef).then((url) => {
+                const post = {
+                  id: props.username,
+                  profilePic: "https://picsum.photos/id/1/200",
+                  likes: 53,
+                  comments: 6,
+                  imageUrl: url,
+                  caption: "Casual, casual, and casual."
+                }
+                setUrls(posts => [...posts, post]);
+                //setImageURLs(oldArray => [...oldArray, url].sort()); //When we do sort outside, it givs an error
+            });
+        });
+    }).catch((error) => {
+        console.log(error);
+    });
+  }
 
   const pickImage = async () => {
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -33,13 +66,11 @@ const SocialPage = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result);
       setPreview(true);
     } else {
-      resetPicture()
+      resetPicture();
     }
   };
 
@@ -53,51 +84,45 @@ const SocialPage = () => {
     <View style={styles.container}>
         {preview && image ? (
           navigation.navigate('ImageSocial', {
-            photo: image, 
+            photo: image,
           }),
           resetPicture()
       ) : (
         <>
-     <View style={headerStyles.header}>
-        <Text style={headerStyles.headerText}> Social </Text>
-        {/* <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/> */}
-        <Ionicons name='add-circle-outline' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/>
-        <PickerModal
-          title="Upload A Post"
-          isVisible={isVisible}
-          data={["Take a photo", "Select from album"]}
-          onPress={(selectedItem) => {
-            if (selectedItem === 'Take a photo') {
-              navigation.navigate('CameraSocial');
+      <View style={headerStyles.header}>
+          <Text style={headerStyles.headerText}> Social </Text>
+          {/* <Ionicons name='camera' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/> */}
+          <Ionicons name='add-circle-outline' size={30} style={headerStyles.icon} onPress={() => setVisible(true)}/>
+          <PickerModal
+            title="Upload A Post"
+            isVisible={isVisible}
+            data={["Take a photo", "Select from album"]}
+            onPress={(selectedItem) => {
+              if (selectedItem === 'Take a photo') {
+                navigation.navigate('CameraSocial');
+                setVisible(false);
+              } else {
+                pickImage();
+              }
+            }}
+            onCancelPress={() => {
               setVisible(false);
-            } else {
-              pickImage();
-            }
-          }}
-          onCancelPress={() => {
-            setVisible(false);
-          }}
-          onBackdropPress={() => {
-            setVisible(false);
-          }}
-        />
-    </View>
-    <SocialBody />
-    </>
-      )}
+            }}
+            onBackdropPress={() => {
+              setVisible(false);
+            }}
+          />
       </View>
-  );
-}
-
-const SocialBody = () => {
-  return (
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 1 }}>
           <FlatList
-            data={POSTS}
+            data={urls}
             renderItem={({ item }) => <Post item={item} />}
           />
         </SafeAreaView>
+      </View>
+    </>
+      )}
       </View>
   );
 }

@@ -55,8 +55,12 @@ const TabNavigator = () => {
         }
     });
 
-    const ProfilePageWithProps = () => { // The downside of react...
+    const ProfilePageWithProps = () => {
         return <ProfilePage name={name} username={username}/>
+    }
+
+    const SocialPageWithProps = () => {
+        return <SocialPage email={user.email} username={username}/>
     }
 
     return (
@@ -89,7 +93,7 @@ const TabNavigator = () => {
             />
             <Tab.Screen 
                 name="Social" 
-                component={SocialPage} 
+                component={SocialPageWithProps} 
                 options={() => ({
                     tabBarIcon: ({color, size}) => (
                         <Feather name="globe" color={color} size={24} />

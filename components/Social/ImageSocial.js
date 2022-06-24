@@ -14,13 +14,15 @@ import {
 import { ref, uploadBytes, uploadBytesResumable, uploadString, getDownloadURL } from "firebase/storage";
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useAuthentication } from '../../utils/hooks/useAuthentication';
-import { storage } from '../../config/firebase'
+import { storage, db } from '../../config/firebase'
+import { setDoc, doc } from 'firebase/firestore'
 
 
 const ImageSocial = ({route}) => {
     const navigation = useNavigation();
     const { photo } = route.params;
     const [ caption, setCaption ] = useState('');
+    const [ imgUrl, setImgUrl ] = useState('');
     const [ uploading, setUploading ] = useState(false);
     //const [ percent, setPercent ] = useState(0);
 
@@ -32,11 +34,27 @@ const ImageSocial = ({route}) => {
 
       const dateTime = Date.now() + '';
       const imageRef = ref(storage, `${user.email}/images/${dateTime}`);
-      const captionRef = ref(storage, `${user.email}/caption/${dateTime}`);
 
       const img = await fetch(photo.uri);
       const bytes = await img.blob();
       const uploadTask = await uploadBytesResumable(imageRef, bytes);
+
+      getDownloadURL(imageRef).then((downloadURL) => {
+        try {
+          const postRef = doc(db, "users", user.email, "posts", dateTime);
+          setDoc(postRef, {
+            name: dateTime,
+            url: downloadURL,
+            caption: caption
+          })
+        }
+        catch(error) {
+          console.log(error);
+        }
+      });
+
+      setUploading(false);
+      setCaption('');
 
       navigation.navigate("Social"); //use with await
 

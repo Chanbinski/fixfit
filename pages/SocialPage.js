@@ -16,9 +16,10 @@ import { useNavigation } from '@react-navigation/native';
 import PickerModal from '../components/PickerModal/PickerModal';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState, useEffect } from 'react';
-import { storage } from '../config/firebase'
-import { listAll, ref, getDownloadURL } from 'firebase/storage'
+import { storage, db } from '../config/firebase'
+import { listAll, ref, getDownloadURL, getBytes, deleteObject } from 'firebase/storage'
 import { useAuthentication } from '../utils/hooks/useAuthentication';
+import { doc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
 
 const SocialPage = (props) => {
 
@@ -29,33 +30,29 @@ const SocialPage = (props) => {
   const [urls, setUrls] = useState([]);
 
   useEffect(() => {
-    getImages();
-  }, [])
-
-  const getImages = () => {
-    const listRef = ref(storage, `${props.email}/images`)
-    setUrls([]);
-    listAll(listRef).then((res) => {
-        res.items.forEach((itemRef) => {           
-            const path = itemRef._location.path_;
-            const urlRef = ref(storage, path);
-            getDownloadURL(urlRef).then((url) => {
-                const post = {
-                  id: props.username,
-                  profilePic: "https://picsum.photos/id/1/200",
-                  likes: 53,
-                  comments: 6,
-                  imageUrl: url,
-                  caption: "Casual, casual, and casual."
-                }
-                setUrls(posts => [...posts, post]);
-                //setImageURLs(oldArray => [...oldArray, url].sort()); //When we do sort outside, it givs an error
-            });
-        });
-    }).catch((error) => {
+    const fetchData = async () => {
+      const q = query(collection(db, "users", props.email, "posts"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const post = {
+          name: doc.data().name,
+          id: props.username,
+          profilePic: "https://picsum.photos/id/1/200",
+          likes: 53,
+          comments: 6,
+          imageUrl: doc.data().url,
+          caption: doc.data().caption
+        }
+        setUrls(posts => [...posts, post])
+      });
+    }
+    try {
+        fetchData();
+    } catch(error) {
         console.log(error);
-    });
-  }
+    }
+  }, [])
 
   const pickImage = async () => {
 
@@ -128,6 +125,8 @@ const SocialPage = (props) => {
 }
 
 const Post = ({item}) => {
+  const [isVisible, setVisible] = useState(false);
+
   return (
     <View style={{ flex: 1, flexDirection: 'column', paddingVertical: 15}}>
       <View style={styles.top}>
@@ -140,7 +139,26 @@ const Post = ({item}) => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity>
-            <MaterialCommunityIcons name="dots-horizontal" size={26} color="black" />
+            <MaterialCommunityIcons name="dots-horizontal" size={26} color="black" onPress={() => setVisible(true)} />
+            <PickerModal
+            title="Post Settings"
+            isVisible={isVisible}
+            data={["Edit post", "Delete post"]}
+            onPress={(selectedItem) => {
+              if (selectedItem === 'Delete post') {
+                //item.name
+                setVisible(false);
+              } else {
+                pickImage();
+              }
+            }}
+            onCancelPress={() => {
+              setVisible(false);
+            }}
+            onBackdropPress={() => {
+              setVisible(false);
+            }}
+          />
           </TouchableOpacity>
       </View>
 

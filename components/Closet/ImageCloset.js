@@ -11,7 +11,7 @@ import {MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../PickerModal/PickerModal';
 import { useAuthentication } from '../../utils/hooks/useAuthentication';
 import { storage } from '../../config/firebase';
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 
 
 const ImageCloset = ({route}) => {
@@ -27,9 +27,13 @@ const ImageCloset = ({route}) => {
       const img = await fetch(photo.uri);
       const bytes = await img.blob();
   
-      uploadBytes(imageRef, bytes).then((snapshot) => {
-        console.log("Upload Successful.");
-      });
+      // uploadBytes(imageRef, bytes).then((snapshot) => {
+      //   console.log("Upload Successful.");
+      // });
+
+      const uploadTask = await uploadBytesResumable(imageRef, bytes);
+
+      navigation.navigate(category.replace('/',''));
     }
 
     console.log('Previewing', photo)
@@ -57,7 +61,6 @@ const ImageCloset = ({route}) => {
           onPress={(selectedItem) => {
             savePhoto(selectedItem);
             setVisible(false);
-            navigation.navigate('Closet');
           }}
           onCancelPress={() => {
             setVisible(false);

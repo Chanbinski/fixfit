@@ -112,12 +112,17 @@ const CameraPreview = ({photo, retakePicture, setChooseImage}) => {
     const img = await fetch(photo.uri);
     const bytes = await img.blob();
 
-    uploadBytes(imageRef, bytes).then((snapshot) => {
-      console.log("Upload Successful.");
-    });
-    
+    // uploadBytes(imageRef, bytes).then((snapshot) => {
+    //   console.log("Upload Successful.");
+    // });
+
+    const uploadTask = await uploadBytesResumable(imageRef, bytes);
+
     setChooseImage(null);
-    navigation.navigate('Tops');
+    
+
+    navigation.navigate(category.replace('/',''));
+  
   }
   
 
@@ -163,7 +168,6 @@ const CameraPreview = ({photo, retakePicture, setChooseImage}) => {
           onPress={(selectedItem) => {
             savePhoto(selectedItem);
             setVisible(false);
-            navigation.navigate('Closet');
           }}
           onCancelPress={() => {
             setVisible(false);

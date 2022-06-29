@@ -15,6 +15,7 @@ import CameraCloset from '../components/Closet/CameraCloset';
 import CameraSocial from '../components/Social/CameraSocial';
 import ImageCloset from '../components/Closet/ImageCloset';
 import ImageSocial from '../components/Social/ImageSocial';
+import EditPost from '../components/Social/EditPost';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -120,6 +121,17 @@ const TabNavigator = () => {
             <Stack.Screen 
                 name="ImageSocial" 
                 component={ImageSocial}
+                options={({route}) => ({
+                    tabBarIcon: ({color, size}) => (
+                        <Feather name="camera" color={color} size={24} />
+                    ),
+                    tabBarStyle: { display: 'none' },
+                    tabBarButton: (prop) => null,
+                })} 
+            />
+            <Stack.Screen 
+                name="EditPost" 
+                component={EditPost}
                 options={({route}) => ({
                     tabBarIcon: ({color, size}) => (
                         <Feather name="camera" color={color} size={24} />

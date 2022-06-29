@@ -22,7 +22,6 @@ import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { doc, getDoc, getDocs, collection, query, deleteDoc } from "firebase/firestore";
 
 const SocialPage = (props) => {
-
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -128,6 +127,7 @@ const SocialPage = (props) => {
 }
 
 const Post = ({item}) => {
+  const navigation = useNavigation();
   const [isVisible, setVisible] = useState(false);
 
   const deletePost = async () => {
@@ -140,7 +140,6 @@ const Post = ({item}) => {
     } catch(error) {
       console.log(error);
     }
-
   }
 
   return (
@@ -166,7 +165,10 @@ const Post = ({item}) => {
                 setVisible(false);
                 deletePost();
               } else {
-                
+                navigation.navigate('EditPost', {
+                  item: item
+                })
+                setVisible(false);
               }
             }}
             onCancelPress={() => {

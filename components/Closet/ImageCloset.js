@@ -10,8 +10,9 @@ import {
 import {MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../PickerModal/PickerModal';
 import { useAuthentication } from '../../utils/hooks/useAuthentication';
-import { storage } from '../../config/firebase';
-import { ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { storage, db, database } from '../../config/firebase';
+import { ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { setDoc, doc } from 'firebase/firestore'
 
 
 const ImageCloset = ({route}) => {
@@ -19,11 +20,15 @@ const ImageCloset = ({route}) => {
     const navigation = useNavigation();
     const [isVisible, setVisible] = useState(false);
     const { user } = useAuthentication();
+    const [ uploading, setUploading ] = useState(false);
     
     const savePhoto = async (category) => {
+
+      setUploading(true);
+
       const dateTime = Date.now() + '';
       const imageRef = ref(storage, `${user.email}/${category}/${dateTime}`);
-  
+
       const img = await fetch(photo.uri);
       const bytes = await img.blob();
   
@@ -33,6 +38,21 @@ const ImageCloset = ({route}) => {
 
       const uploadTask = await uploadBytesResumable(imageRef, bytes);
 
+      getDownloadURL(imageRef).then((downloadURL) => {
+        try {
+          console.log('uploaded');
+          const postRef = doc(db, "users", user.email, category, dateTime);
+          setDoc(postRef, {
+            url:downloadURL,
+          })
+        }
+        catch(error) {
+          console.log(error);
+        }
+      });
+
+
+      setUploading(false);
       navigation.navigate(category.replace('/',''));
     }
 
@@ -47,6 +67,9 @@ const ImageCloset = ({route}) => {
                   navigation.navigate('Closet');
               }}/>
             </TouchableOpacity>
+            <View style={styles.test}>
+              { uploading && <Text style={{ color: 'gray' }}>Uploading in progress...</Text> }
+            </View>
             <TouchableOpacity 
               onPress={() => {
                 setVisible(true); 
@@ -118,6 +141,12 @@ const styles = StyleSheet.create({
         right: 40,
         flex: 0.1,
         color: '#fff',
+    },
+    test: {
+      position: 'absolute',
+      top: 40,
+      left: 100,
+      flex: 0.1,
     },
     text: {
         fontSize: 20,

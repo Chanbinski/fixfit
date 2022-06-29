@@ -275,7 +275,7 @@ const headerStyles = StyleSheet.create({
     flexDirection: "row", 
     alignItems: "center", 
     top:'57%',
-    paddingRight: 0
+    paddingRight: 5
   },
 });
 

@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     alignItems: "center", 
     top:'62%',
-    paddingRight: 8
+    paddingRight: 5
   },
   avatar: {
     marginBottom: '5%',

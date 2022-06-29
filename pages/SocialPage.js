@@ -19,7 +19,7 @@ import React, { useState, useEffect } from 'react';
 import { storage, db } from '../config/firebase'
 import { listAll, ref, getDownloadURL, getBytes, deleteObject } from 'firebase/storage'
 import { useAuthentication } from '../utils/hooks/useAuthentication';
-import { doc, getDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, query, deleteDoc } from "firebase/firestore";
 
 const SocialPage = (props) => {
 
@@ -27,25 +27,28 @@ const SocialPage = (props) => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isVisible, setVisible] = useState(false);
-  const [urls, setUrls] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const q = query(collection(db, "users", props.email, "posts"));
       const querySnapshot = await getDocs(q);
+      setPosts([]);
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         const post = {
-          name: doc.data().name,
-          id: props.username,
+          postName: doc.data().name,
+          email: props.email,
+          username: props.username,
           profilePic: "https://picsum.photos/id/1/200",
           likes: 53,
           comments: 6,
           imageUrl: doc.data().url,
           caption: doc.data().caption
         }
-        setUrls(posts => [...posts, post])
+        setPosts(posts => [...posts, post])
       });
+      setPosts(posts => posts.reverse());
     }
     try {
         fetchData();
@@ -113,7 +116,7 @@ const SocialPage = (props) => {
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 1 }}>
           <FlatList
-            data={urls}
+            data={posts}
             renderItem={({ item }) => <Post item={item} />}
           />
         </SafeAreaView>
@@ -127,6 +130,19 @@ const SocialPage = (props) => {
 const Post = ({item}) => {
   const [isVisible, setVisible] = useState(false);
 
+  const deletePost = async () => {
+    await deleteDoc(doc(db, "users", item.email, "posts", item.postName));
+
+    const storageRef = ref(storage, `${item.email}/images/${item.postName}`);
+
+    try {
+      deleteObject(storageRef);
+    } catch(error) {
+      console.log(error);
+    }
+
+  }
+
   return (
     <View style={{ flex: 1, flexDirection: 'column', paddingVertical: 15}}>
       <View style={styles.top}>
@@ -135,7 +151,7 @@ const Post = ({item}) => {
               <Image style={{ width: 35, height: 35, borderRadius: 100 }} source={{ uri: item.profilePic }}/>
             </TouchableOpacity>
             <TouchableOpacity>
-              <Text style={styles.topLeftText}>{item.id}</Text>
+              <Text style={styles.topLeftText}>{item.username}</Text>
             </TouchableOpacity>
           </View>
           <TouchableOpacity>
@@ -148,8 +164,9 @@ const Post = ({item}) => {
               if (selectedItem === 'Delete post') {
                 //item.name
                 setVisible(false);
+                deletePost();
               } else {
-                pickImage();
+                
               }
             }}
             onCancelPress={() => {

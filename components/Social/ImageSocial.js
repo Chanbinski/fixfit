@@ -51,12 +51,11 @@ const ImageSocial = ({route}) => {
         catch(error) {
           console.log(error);
         }
+
+        setUploading(false);
+        setCaption('');
+        navigation.navigate("Social"); //use with await
       });
-
-      setUploading(false);
-      setCaption('');
-
-      navigation.navigate("Social"); //use with await
 
       //Progress bar sometimes working, not all the time
       // uploadTask.on('state_changed',
@@ -105,6 +104,7 @@ const ImageSocial = ({route}) => {
                 style={styles.itemPhoto}
             />
             <TextInput 
+                value={caption}
                 style={styles.input}
                 multiline={true}
                 textAlignVertical="top"

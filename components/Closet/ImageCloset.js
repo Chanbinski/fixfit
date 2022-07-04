@@ -43,17 +43,16 @@ const ImageCloset = ({route}) => {
           console.log('uploaded');
           const postRef = doc(db, "users", user.email, category, dateTime);
           setDoc(postRef, {
-            url:downloadURL,
+            name: dateTime,
+            url: downloadURL,
           })
         }
         catch(error) {
           console.log(error);
         }
+        setUploading(false);
+        navigation.navigate(category.replace('/',''));
       });
-
-
-      setUploading(false);
-      navigation.navigate(category.replace('/',''));
     }
 
     console.log('Previewing', photo)
@@ -68,7 +67,7 @@ const ImageCloset = ({route}) => {
               }}/>
             </TouchableOpacity>
             <View style={styles.test}>
-              { uploading && <Text style={{ color: 'gray' }}>Uploading in progress...</Text> }
+              { uploading && <Text style={{ color: 'white' }}>Uploading in progress...</Text> }
             </View>
             <TouchableOpacity 
               onPress={() => {
@@ -130,22 +129,22 @@ const styles = StyleSheet.create({
     },
     cancelButton: {
       position: 'absolute',
-      top: 40,
-      left: 40,
+      top: 60,
+      left: 20,
       flex: 0.1,
       color: '#fff',
     },
     secondScreen: {
         position: 'absolute',
-        bottom: 40,
-        right: 40,
+        bottom: 55,
+        right: 20,
         flex: 0.1,
         color: '#fff',
     },
     test: {
       position: 'absolute',
-      top: 40,
-      left: 100,
+      top: 65,
+      alignSelf: 'center',
       flex: 0.1,
     },
     text: {

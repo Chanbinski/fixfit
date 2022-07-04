@@ -7,6 +7,7 @@ import { ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebas
 import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
+import { useScrollToTop } from '@react-navigation/native';
 
 const auth = getAuth();
 
@@ -39,18 +40,20 @@ const Category = (props) => {
     }
   };
 
-  const fetchData = async () => {
-    const q = query(collection(db, "users", user.email, props.name),orderBy("url", "desc"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      const url = doc.data().url;
-      console.log('set');
-      setUrls(urls => [...urls, url])
-    });
-  }
+  
 
   useEffect(() => {
+    const fetchData = async () => {
+      const q = query(collection(db, "users", user.email, props.name));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const url = doc.data().url;
+        console.log('set');
+        setUrls(urls => [...urls, url]);
+      });
+      setUrls(urls => urls.reverse());
+    }
     try {
       fetchData();
   } catch(error) {

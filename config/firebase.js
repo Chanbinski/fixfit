@@ -22,3 +22,4 @@ export const database = getDatabase(app);
 
 export const storage = getStorage(app, "gs://fixfit-81ac.appspot.com");
 
+s

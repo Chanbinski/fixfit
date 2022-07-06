@@ -179,6 +179,16 @@ const HomeStack = (props) => {
 }
 
 const ClosetStack = () => {
+
+    const { user } = useAuthentication();
+
+    const Accessories = () => { return ( <Category name="Accessories" email={user?.email}/> ) }
+    const Outerwear = () => { return ( <Category name="Outerwear" email={user?.email}/> ) }
+    const Tops = () => { return ( <Category name="Tops" email={user?.email} /> ) }
+    const Bottoms = () => { return ( <Category name="Bottoms" email={user?.email}/> ) }
+    const DressesSkirts = () => { return ( <Category name="Dresses/Skirts" email={user?.email}/> ) }
+    const Shoes = () => { return ( <Category name="Shoes" email={user?.email}/> ) }
+
     return (
         <Stack.Navigator>
              <Stack.Screen 
@@ -214,11 +224,7 @@ const ClosetStack = () => {
     )
 }
 
-const Accessories = () => { return ( <Category name="Accessories" /> ) }
-const Outerwear = () => { return ( <Category name="Outerwear" /> ) }
-const Tops = () => { return ( <Category name="Tops" /> ) }
-const Bottoms = () => { return ( <Category name="Bottoms" /> ) }
-const DressesSkirts = () => { return ( <Category name="Dresses/Skirts" /> ) }
-const Shoes = () => { return ( <Category name="Shoes" /> ) }
+
+
 
 export default TabNavigator;

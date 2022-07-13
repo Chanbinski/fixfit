@@ -34,11 +34,9 @@ const Category = (props) => {
     }
     try {
       fetchData();
-      console.log(urls);
     } catch(error) {
       console.log(error);
     }
-    
   }, [isFocused]);
 
   return (

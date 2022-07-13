@@ -20,5 +20,4 @@ export const db = getFirestore(app);
 
 export const database = getDatabase(app);
 
-export const storage = getStorage(app, "gs://fixfit-a98c2.appspot.com");
-
+export const storage = getStorage(app, "gs://fixfit-81cac.appspot.com");

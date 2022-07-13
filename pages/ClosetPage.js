@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,6 +15,8 @@ import {
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../components/PickerModal/PickerModal';
 import * as ImagePicker from 'expo-image-picker';
+import { storage, db } from '../config/firebase';
+import { doc, getDoc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
 
 const ListItem = ({ item }) => {
   return (
@@ -26,16 +28,49 @@ const ListItem = ({ item }) => {
         style={styles.itemPhoto}
         resizeMode="cover"
       />
-      <Text style={styles.itemText}>{item.text}</Text>
+      {/* <Text style={styles.itemText}>{item.text}</Text> */}
     </View>
   );
 };
 
-const ClosetPage = () => {
+const ClosetPage = (props) => {
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isVisible, setVisible] = useState(false);
+  const [sections, setSections] = useState([]);
+  const [lists, setLists] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const catList = ["Accessories", "Outerwear", "Tops", "Bottoms", "Shoes"];
+      setSections([]);
+      catList.forEach(async (category) => {
+        setLists([]);
+        const q = query(collection(db, "users", props.email, category));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          const image = {
+            key: doc.data().name,
+            uri: doc.data().url,
+          }
+          setLists(list => [...list, image]);
+        });
+        setLists(list => list.reverse());
+        console.log(lists);
+        const newSection = {
+          title: category,
+          data: lists
+        }
+        setSections(sections => [...sections, newSection]);
+      })
+    }
+    try {
+      fetchData();
+    } catch(error) {
+      console.log(error);
+    }
+  }, []);
 
 
   const pickImage = async () => {
@@ -94,14 +129,14 @@ const ClosetPage = () => {
           }}
         />
     </View>
-    <ClosetBody />
+    <ClosetBody sections={sections} />
     </>
       )}
       </View>
   );
 }
 
-const ClosetBody = () => {
+const ClosetBody = (props) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -110,7 +145,7 @@ const ClosetBody = () => {
       <SectionList
         contentContainerStyle={{ paddingLeft: 15 }}
         stickySectionHeadersEnabled={false}
-        sections={SECTIONS}
+        sections={props.sections}
         renderSectionHeader={({ section }) => (
           <>
             <Text style={styles.sectionHeader} onPress={() => navigation.navigate(section.title.replace('/',''))}>

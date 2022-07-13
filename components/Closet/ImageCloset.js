@@ -6,6 +6,8 @@ import {
   View,
   ImageBackground,
   TouchableOpacity,
+  Button,
+  SafeAreaView,
 } from 'react-native';
 import {MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../PickerModal/PickerModal';
@@ -55,46 +57,73 @@ const ImageCloset = ({route}) => {
       });
     }
 
-    console.log('Previewing', photo)
+    const PostHeader = () => {
+
+      const navigation = useNavigation();
+    
+      return (
+        <View style={headerStyles.header}>
+          <Button 
+            title="Cancel" 
+            onPress={() => navigation.navigate('Closet')}
+          />
+          <Text style={headerStyles.titleText}>Upload</Text>
+          <Button 
+            title="Upload" 
+            onPress={() => {
+                setVisible(true); 
+            }}
+          />
+          <PickerModal
+            title="Choose a category that you would like to save to."
+            isVisible={isVisible}
+            data={["Accessories", "Outerwear", "Tops", "Bottoms", "Dresses/Skirts", "Shoes"]}
+            onPress={(selectedItem) => {
+              savePhoto(selectedItem);
+              setVisible(false);
+            }}
+            onCancelPress={() => {
+              setVisible(false);
+            }}
+            onBackdropPress={() => {
+              setVisible(false);
+            }}
+          />
+        </View>
+      )
+    }
+
     return (
-      <View style={styles.imagePrev}>
+      <SafeAreaView style={styles.imagePrev}>
+        <PostHeader />
+          <View style={{ marginVertical: 10, justifyContent: 'center', alignItems: 'center' }}>
+                { uploading && <Text style={{ color: 'gray' }}>Uploading in progress...</Text> }
+          </View>
+
         <ImageBackground
           source={{uri: photo && photo.uri}}
-          style={{ flex: 1 }}>
-            <TouchableOpacity>
-              <MaterialIcons name='close' size={30} style={styles.cancelButton} onPress={() => {
-                  navigation.navigate('Closet');
-              }}/>
-            </TouchableOpacity>
-            <View style={styles.test}>
-              { uploading && <Text style={{ color: 'white' }}>Uploading in progress...</Text> }
-            </View>
-            <TouchableOpacity 
-              onPress={() => {
-                setVisible(true); 
-              }} 
-              style={ styles.secondScreen }>
-              <Text style={styles.text}> Save </Text>
-            </TouchableOpacity>
-            <PickerModal
-          title="Choose a category that you would like to save to."
-          isVisible={isVisible}
-          data={["Accessories", "Outerwear", "Tops", "Bottoms", "Dresses/Skirts", "Shoes"]}
-          onPress={(selectedItem) => {
-            savePhoto(selectedItem);
-            setVisible(false);
-          }}
-          onCancelPress={() => {
-            setVisible(false);
-          }}
-          onBackdropPress={() => {
-            setVisible(false);
-          }}
+          style={styles.itemPhoto}
         />
-        </ImageBackground>
-      </View>
+      </SafeAreaView>
     )
 };
+
+const headerStyles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    height: '6%',
+    backgroundColor: '#fff',
+    borderBottomColor: '#808080',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  titleText: {
+    fontSize: 18,
+    fontWeight: '600'
+  }
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -113,19 +142,17 @@ const styles = StyleSheet.create({
       paddingRight: 20
     },
     itemPhoto: {
-      width: 200,
-      height: 200,
+      width: '100%',
+      height: undefined,
+      aspectRatio: 1
     },
     itemText: {
       color: '#000000',
       marginTop: 5,
     },
     imagePrev: {
-      backgroundColor: 'transparent',
+      backgroundColor: 'white',
       flex: 1,
-      width: '100%',
-      height: '100%',
-      justifyContent: 'center',
     },
     cancelButton: {
       position: 'absolute',

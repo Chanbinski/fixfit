@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native';
-import { Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import Divider from '../components/PickerModal/components/divider/Divider';
 import { Header } from '../navigation/Header';
 import React, { useState } from 'react';

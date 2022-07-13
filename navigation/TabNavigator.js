@@ -182,6 +182,9 @@ const ClosetStack = () => {
 
     const { user } = useAuthentication();
 
+    const ClosetPageWithProps = () => {
+        return <ClosetPage email={user?.email}/>
+    }
     const Accessories = () => { return ( <Category name="Accessories" email={user?.email}/> ) }
     const Outerwear = () => { return ( <Category name="Outerwear" email={user?.email}/> ) }
     const Tops = () => { return ( <Category name="Tops" email={user?.email} /> ) }
@@ -193,7 +196,7 @@ const ClosetStack = () => {
         <Stack.Navigator>
              <Stack.Screen 
                 name="ClosetS"
-                component={ClosetPage}
+                component={ClosetPageWithProps}
                 options={{ headerShown: false }}
             />
              <Stack.Screen 

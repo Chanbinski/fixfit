@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, FlatList, SafeAreaView } from 'react-native';
 import { Header } from '../navigation/Header';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { storage, db } from '../config/firebase';
@@ -43,15 +43,38 @@ const Category = (props) => {
 
   return (
     <>
-      <ScrollView style={styles.container}>
-        {/* <Text>{props.name}</Text> */}
-        {urls.map(url => (
-          console.log(url.url),
-          <Image style={styles.image} source={{uri: url.url}} />
-        ))}
-        {/* <Image style={styles.image} source={{uri: urls[0]}} /> */}
-      </ScrollView>
+      <View style={styles.container}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <FlatList
+            data={urls}
+            renderItem={({ item }) => <Item item={item} />}
+            showsVerticalScrollIndicator={false}
+          />
+        </SafeAreaView>
+      </View>
     </>
+  );
+}
+
+const Item = ({item}) => {
+  const [isVisible, setVisible] = useState(false);
+
+  const deletePost = async () => {
+    await deleteDoc(doc(db, "users", item.email, "posts", item.postName));
+
+    const storageRef = ref(storage, `${item.email}/images/${item.postName}`);
+
+    try {
+      deleteObject(storageRef);
+    } catch(error) {
+      console.log(error);
+    }
+  }
+
+  return (
+    <View style={{ flex: 1, flexDirection: 'column', paddingVertical: 15}}>
+      <Image style={styles.image} source={{ uri: item.url }}  />
+    </View>
   );
 }
 
@@ -59,16 +82,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  image: {
-    width: 200,
-    height: 200,
-    flexDirection: "row", 
     alignItems: "center", 
     justifyContent: 'center',
-    marginLeft: '10%',
-    flex: 1,
-    marginVertical:  '5%',
+  },
+  image: {
+    width: 300,
+    height: 300,
+    paddingTop: 10
   },
 });
 

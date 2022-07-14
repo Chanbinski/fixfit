@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, FlatList, SafeAreaView, ActivityIndicator } from 'react-native';
 import { Header } from '../navigation/Header';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
 import { storage, db } from '../config/firebase';
@@ -10,6 +10,8 @@ import { doc, getDoc, getDocs, collection, query, where, orderBy } from "firebas
 import { useIsFocused } from '@react-navigation/native';
 import { set } from 'firebase/database';
 
+import CachedImage from 'expo-cached-image'
+
 const auth = getAuth();
 
 const Category = (props) => {
@@ -19,22 +21,21 @@ const Category = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, "users", props.email, props.name));
+      const q = query(collection(db, "users", props.email, props.name), orderBy("name", "desc"));
       const querySnapshot = await getDocs(q);
       setUrls([]);
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         const obj = {
+          key: doc.data().name,
           url: doc.data().url
         }
         console.log('set');
         setUrls(urls => [...urls, obj]);
       });
-      setUrls(urls => urls.reverse());
     }
     try {
       fetchData();
-      console.log(urls);
     } catch(error) {
       console.log(error);
     }
@@ -73,7 +74,23 @@ const Item = ({item}) => {
 
   return (
     <View style={{ flex: 1, flexDirection: 'column', paddingVertical: 15}}>
-      <Image style={styles.image} source={{ uri: item.url }}  />
+      <CachedImage
+          source={{ 
+            uri: item.uri, // (required) -- URI of the image to be cached         
+          }}
+          cacheKey={item.key} // (required) -- key to store image locally
+          placeholderContent={( // (optional) -- shows while the image is loading
+            <ActivityIndicator // can be any react-native tag
+              size="small"
+              style={{
+                flex: 1,
+                justifyContent: "center",
+              }}
+            />
+          )} 
+          resizeMode="contain" // pass-through to <Image /> tag 
+          style={styles.image} // pass-through to <Image /> tag s
+        />
     </View>
   );
 }

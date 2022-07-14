@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {
   MaterialCommunityIcons,
@@ -19,7 +20,9 @@ import React, { useState, useEffect } from 'react';
 import { storage, db } from '../config/firebase'
 import { listAll, ref, getDownloadURL, getBytes, deleteObject } from 'firebase/storage'
 import { useAuthentication } from '../utils/hooks/useAuthentication';
-import { doc, getDoc, getDocs, collection, query, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, query, deleteDoc, orderBy } from "firebase/firestore";
+
+import CachedImage from 'expo-cached-image'
 
 const SocialPage = (props) => {
   const navigation = useNavigation();
@@ -30,7 +33,7 @@ const SocialPage = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const q = query(collection(db, "users", props.email, "posts"));
+      const q = query(collection(db, "users", props.email, "posts"), orderBy("name", "desc"));
       const querySnapshot = await getDocs(q);
       setPosts([]);
       querySnapshot.forEach((doc) => {
@@ -47,7 +50,6 @@ const SocialPage = (props) => {
         }
         setPosts(posts => [...posts, post])
       });
-      setPosts(posts => posts.reverse());
     }
     try {
         fetchData();
@@ -181,7 +183,24 @@ const Post = ({item}) => {
           </TouchableOpacity>
       </View>
 
-      <Image style={styles.image} source={{ uri: item.imageUrl }} />
+      {/* <Image style={styles.image} source={{ uri: item.imageUrl }} /> */}
+      <CachedImage
+          source={{ 
+            uri: item.imageUrl, // (required) -- URI of the image to be cached         
+          }}
+          cacheKey={item.postName} // (required) -- key to store image locally
+          placeholderContent={( // (optional) -- shows while the image is loading
+            <ActivityIndicator // can be any react-native tag
+              size="small"
+              style={{
+                flex: 1,
+                justifyContent: "center",
+              }}
+            />
+          )} 
+          resizeMode="contain" // pass-through to <Image /> tag 
+          style={styles.image} // pass-through to <Image /> tag 
+        />
 
       <View style={styles.bottom}>
         <View style={{ flexDirection: "row", alignItems: 'center', paddingVertical: 10}} >

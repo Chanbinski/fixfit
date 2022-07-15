@@ -11,6 +11,7 @@ import {
   FlatList,
   ImageBackground,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../components/PickerModal/PickerModal';
@@ -18,17 +19,38 @@ import * as ImagePicker from 'expo-image-picker';
 import { storage, db } from '../config/firebase';
 import { doc, getDoc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
 
+import CachedImage from 'expo-cached-image'
+
 const ListItem = ({ item }) => {
   return (
     <View style={styles.item}>
-      <Image
+      {/* <Image
         source={{
           uri: item.uri,
         }}
         style={styles.itemPhoto}
         resizeMode="cover"
-      />
+      /> */}
       {/* <Text style={styles.itemText}>{item.text}</Text> */}
+      <CachedImage
+          source={{ 
+            uri: item.uri, // (required) -- URI of the image to be cached         
+          }}
+          cacheKey={item.key} // (required) -- key to store image locally
+          placeholderContent={( // (optional) -- shows while the image is loading
+            <ActivityIndicator // can be any react-native tag
+              size="small"
+              style={{
+                flex: 1,
+                justifyContent: "center",
+              }}
+            />
+          )} 
+          resizeMode="contain" // pass-through to <Image /> tag 
+          style={              // pass-through to <Image /> tag 
+            styles.itemPhoto
+          }
+        />
     </View>
   );
 };
@@ -39,31 +61,28 @@ const ClosetPage = (props) => {
   const [preview, setPreview] = useState(null);
   const [isVisible, setVisible] = useState(false);
   const [sections, setSections] = useState([]);
-  const [lists, setLists] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const catList = ["Accessories", "Outerwear", "Tops", "Bottoms", "Shoes"];
+      const catList = ["Accessories", "Outerwear", "Tops", "Bottoms", "Dresses/Skirts", "Shoes"];
       setSections([]);
-      catList.forEach(async (category) => {
-        setLists([]);
-        const q = query(collection(db, "users", props.email, category));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          const image = {
-            key: doc.data().name,
-            uri: doc.data().url,
-          }
-          setLists(list => [...list, image]);
-        });
-        setLists(list => list.reverse());
-        console.log(lists);
-        const newSection = {
-          title: category,
-          data: lists,
-        }
-        setSections(sections => [...sections, newSection]);
-      })
+        catList.forEach(async (category) => {
+            const l = [];
+            const q = query(collection(db, "users", props.email, category.replace('/','')), orderBy("name", "desc"));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+              const image = {
+                key: doc.data().name,
+                uri: doc.data().url,
+              }
+              l.push(image);
+            });
+            const newSection = {
+              title: category,
+              data: l
+            }
+            setSections(sections => [...sections, newSection]);
+        })
     }
     try {
       fetchData();

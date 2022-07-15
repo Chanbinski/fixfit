@@ -25,6 +25,7 @@
     "env-cmd": "^10.1.0",
     "expo": "~45.0.0",
     "expo-app-loading": "^2.0.0",
+    "expo-cached-image": "^45.1.1",
     "expo-camera": "^12.2.0",
     "expo-constants": "~13.1.1",
     "expo-gl": "^11.3.0",

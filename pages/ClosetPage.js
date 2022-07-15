@@ -60,7 +60,7 @@ const ClosetPage = (props) => {
         console.log(lists);
         const newSection = {
           title: category,
-          data: lists
+          data: lists,
         }
         setSections(sections => [...sections, newSection]);
       })

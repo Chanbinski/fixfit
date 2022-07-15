@@ -39,7 +39,6 @@ const Category = (props) => {
     } catch(error) {
       console.log(error);
     }
-    
   }, [isFocused]);
 
   return (

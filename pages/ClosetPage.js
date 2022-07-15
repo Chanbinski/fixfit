@@ -61,7 +61,6 @@ const ClosetPage = (props) => {
   const [preview, setPreview] = useState(null);
   const [isVisible, setVisible] = useState(false);
   const [sections, setSections] = useState([]);
-  const [lists, setLists] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -1,20 +1,45 @@
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { Avatar } from 'react-native-paper';
 import Divider from '../components/PickerModal/components/divider/Divider';
 import { Header } from '../navigation/Header';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {  MaterialIcons } from '@expo/vector-icons';
 import PickerModal from '../components/PickerModal/PickerModal';
 import { getAuth, signOut } from 'firebase/auth';
 import { useAuthentication } from '../utils/hooks/useAuthentication';
+import { storage, db } from '../config/firebase';
+import { doc, getDoc, getDocs, collection, query, where, orderBy, limit } from "firebase/firestore";
 
+import CachedImage from 'expo-cached-image'
 
 const auth = getAuth();
 
 const ProfilePage = (props) => {
   const navigation = useNavigation();
   const [isVisible, setVisible] = useState(false);
+  const [urls, setUrls] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const q = query(collection(db, "users", props.email, "posts"), orderBy("name", "desc"), limit(6));
+      const querySnapshot = await getDocs(q);
+      setUrls([]);
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        const obj = {
+          key: doc.data().name,
+          imageUrl: doc.data().url
+        }
+        setUrls(urls => [...urls, obj]);
+      });
+    }
+    try {
+      fetchData();
+    } catch(error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <>
@@ -42,8 +67,42 @@ const ProfilePage = (props) => {
           }}
         />
         </View>
-      <ProfileBody name={props.name} />
+      <ProfileBody name={props.name} urls={urls} />
+      <ScrollView style={styles.displayBox}>
+          <FlatList
+            data={urls}
+            numColumns={3}
+            renderItem={({ item }) => <Item item={item} />}
+            showsVerticalScrollIndicator={false}
+          />
+          {/* <Images urls={props.urls} /> */}
+      </ScrollView>
     </>
+  );
+}
+
+const Item = ({item}) => {
+
+  return (
+    <View style={{flex: 1/3, marginHorizontal: 10, marginVertical: 10}}>
+      <CachedImage
+          source={{ 
+            uri: item.uri, // (required) -- URI of the image to be cached         
+          }}
+          cacheKey={item.key} // (required) -- key to store image locally
+          placeholderContent={( // (optional) -- shows while the image is loading
+            <ActivityIndicator // can be any react-native tag
+              size="small"
+              style={{
+                flex: 1,
+                justifyContent: "center",
+              }}
+            />
+          )} 
+          resizeMode="contain" // pass-through to <Image /> tag 
+          style={styles.image} // pass-through to <Image /> tag s
+        />
+    </View>
   );
 }
 
@@ -64,51 +123,13 @@ const ProfileBody = (props) => {
         <View style={styles.displayBar}> 
           <Text style={styles.textLeft}> Past six days </Text>
           <TouchableOpacity>
-            <Text style={{fontSize: 16}} onPress={() => {navigation.navigate('Closet')}}> See more </Text>
+            <Text style={{fontSize: 16}} onPress={() => {navigation.navigate('Social')}}> See more </Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.displayBox}>
-          <Images />
-        </ScrollView>
       </View>
   );
 }
 
-const Images = () => {
-  const results = [];
-  const len = PICTURES.length;
-
-  for (var i = 0; i < len; i+= 3) {
-    if (len - i >= 3) {
-      results.push(
-        <View style={styles.row}>
-          <Image style={styles.image} source={{uri: PICTURES[i].imageUrl}} />
-          <Image style={styles.image} source={{uri: PICTURES[i+1].imageUrl}} />
-          <Image style={styles.image} source={{uri: PICTURES[i+2].imageUrl}} />
-        </View>
-      );
-    } else if (len - i == 2) {
-      results.push(
-        <View style={styles.row}>
-          <Image style={styles.image} source={{uri: PICTURES[i].imageUrl}} />
-          <Image style={styles.image} source={{uri: PICTURES[i+1].imageUrl}} />
-        </View>
-      );
-    } else {
-      results.push(
-        <View style={styles.row}>
-          <Image style={styles.image} source={{uri: PICTURES[i].imageUrl}} />
-        </View>
-      );
-    }
-  }
-
-  return (
-    <>
-      {results}
-    </>
-  );
-}
 
 const headerStyles = StyleSheet.create({
   container: {
@@ -206,9 +227,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   displayBox: {
-    flex: 3,
-    marginHorizontal: 'auto',
+    flex: 1/3,
     width: '100%',
+    backgroundColor: 'white'
   },
   image: {
     width: 105,

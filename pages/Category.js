@@ -15,7 +15,6 @@ import CachedImage from 'expo-cached-image'
 const auth = getAuth();
 
 const Category = (props) => {
-  const [imageURLs, setImageURLs] = useState([]);
   const [urls, setUrls] = useState([]);
   const isFocused = useIsFocused();
 

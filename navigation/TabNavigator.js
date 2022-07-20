@@ -54,7 +54,7 @@ const TabNavigator = () => {
     });
 
     const ProfilePageWithProps = () => {
-        return <ProfilePage name={name} username={username}/>
+        return <ProfilePage email={user.email} name={name} username={username}/>
     }
 
     const SocialPageWithProps = () => {

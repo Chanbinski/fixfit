@@ -16,6 +16,7 @@ import CameraSocial from '../components/Social/CameraSocial';
 import ImageCloset from '../components/Closet/ImageCloset';
 import ImageSocial from '../components/Social/ImageSocial';
 import EditPost from '../components/Social/EditPost';
+import EditProfile from '../components/Profile/EditProfile'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -59,6 +60,9 @@ const TabNavigator = () => {
 
     const SocialPageWithProps = () => {
         return <SocialPage email={user.email} username={username}/>
+    }
+    const EditProfileWithProps = () => {
+        return <EditProfile email={user.email} username={username} name={name}/>
     }
 
     return (
@@ -158,6 +162,14 @@ const TabNavigator = () => {
                     tabBarIcon: ({color, size}) => (
                         <Feather name="camera" color={color} size={24} />
                     ),
+                    tabBarStyle: { display: 'none' },
+                    tabBarButton: (prop) => null,
+                })} 
+            />
+            <Stack.Screen 
+                name="EditProfile" 
+                component={EditProfileWithProps}
+                options={({route}) => ({
                     tabBarStyle: { display: 'none' },
                     tabBarButton: (prop) => null,
                 })} 

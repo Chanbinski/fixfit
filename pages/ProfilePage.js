@@ -116,6 +116,7 @@ const ProfileBody = (props) => {
         <Text style={styles.button}>Cal 25+2</Text>
         <TouchableOpacity
           style={styles.buttonfilled}
+          onPress={() => {navigation.navigate('EditProfile')}}
         >
           <Text> Edit Profile </Text>
         </TouchableOpacity>

@@ -30,6 +30,7 @@ const SocialPage = (props) => {
   const [preview, setPreview] = useState(null);
   const [isVisible, setVisible] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [profilePicName, setProfilePicName] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +43,8 @@ const SocialPage = (props) => {
           postName: doc.data().name,
           email: props.email,
           username: props.username,
-          profilePic: "https://picsum.photos/id/1/200",
+          profilePic: props.profilePic,
+          profilePicName: props.profilePicName,
           likes: 53,
           comments: 6,
           imageUrl: doc.data().url,
@@ -63,7 +65,7 @@ const SocialPage = (props) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspectRatio: [3, 4],
       quality: 1,
     });
 
@@ -149,7 +151,23 @@ const Post = ({item}) => {
       <View style={styles.top}>
           <View style={styles.topLeft}>
             <TouchableOpacity>
-              <Image style={{ width: 35, height: 35, borderRadius: 100 }} source={{ uri: item.profilePic }}/>
+            <CachedImage
+              source={{ 
+                uri: item.profilePic, // (required) -- URI of the image to be cached         
+              }}
+              cacheKey={item.profilePicName} // (required) -- key to store image locally
+              placeholderContent={( // (optional) -- shows while the image is loading
+                <ActivityIndicator // can be any react-native tag
+                  size="small"
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                  }}
+                />
+              )} 
+              resizeMode="contain" // pass-through to <Image /> tag 
+              style={{ width: 35, height: 35, borderRadius: 100 }} // pass-through to <Image /> tag 
+            />
             </TouchableOpacity>
             <TouchableOpacity>
               <Text style={styles.topLeftText}>{item.username}</Text>
@@ -198,7 +216,6 @@ const Post = ({item}) => {
               }}
             />
           )} 
-          resizeMode="contain" // pass-through to <Image /> tag 
           style={styles.image} // pass-through to <Image /> tag 
         />
 
@@ -233,33 +250,6 @@ const Post = ({item}) => {
   );
 }
 
-const POSTS = [
-  {
-    id: "jjangu1015",
-    profilePic: "https://picsum.photos/id/1/200",
-    likes: 52,
-    comments: 6,
-    imageUrl: 'https://nextluxury.com/wp-content/uploads/guys-dapper-style-casual-wear-ideas-blue-dress-shirt.jpg',
-    caption: "Casual, casual, and casual."
-  },
-  {
-    id: "beachbaby",
-    profilePic: "https://picsum.photos/id/10/200",
-    likes: 530,
-    comments: 60,
-    imageUrl: 'https://i.pinimg.com/originals/ed/4c/2d/ed4c2d0639314c5eb8c4ab8adc0a6e41.jpg',
-    caption: "King."
-  },
-  {
-    id: "lebronJames23",
-    profilePic: "https://picsum.photos/id/1002/200",
-    likes: 88,
-    comments: 1,
-    imageUrl: 'https://i.pinimg.com/550x/e5/28/be/e528be85cbc45eb6207ab2a3dea1589c.jpg',
-    caption: "I love James' new outfit."
-  },
-];
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -283,8 +273,8 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: undefined,
-    aspectRatio: 4/5,
-    paddingTop: 0
+    aspectRatio: 1,
+    paddingTop: 0,
   },
   bottom: {
     flexDirection: "column",

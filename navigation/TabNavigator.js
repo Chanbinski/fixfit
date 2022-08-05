@@ -32,6 +32,9 @@ const TabNavigator = () => {
 
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
+    const [profilePic, setProfilePic] = useState('');
+    const [profilePicName, setProfilePicName] = useState('');
+    const [bio, setBio] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,6 +43,9 @@ const TabNavigator = () => {
             if (docSnap.exists()) {
                 setName(docSnap.data().name);
                 setUsername(docSnap.data().username);
+                setBio(docSnap.data().bio);
+                setProfilePic(docSnap.data().profilePicture);
+                setProfilePicName(docSnap.data().profilePicName);
             } else {
                 // Cannot fetch data
                 setName('unknown');
@@ -55,14 +61,14 @@ const TabNavigator = () => {
     });
 
     const ProfilePageWithProps = () => {
-        return <ProfilePage email={user.email} name={name} username={username}/>
+        return <ProfilePage email={user.email} name={name} username={username} profilePic={profilePic} bio={bio} profilePicName={profilePicName}/>
     }
 
     const SocialPageWithProps = () => {
-        return <SocialPage email={user.email} username={username}/>
+        return <SocialPage email={user.email} username={username} profilePic={profilePic} profilePicName={profilePicName}/>
     }
     const EditProfileWithProps = () => {
-        return <EditProfile email={user.email} username={username} name={name}/>
+        return <EditProfile email={user.email} username={username} name={name} profilePic={profilePic} bio={bio} profilePicName={profilePicName} />
     }
 
     return (

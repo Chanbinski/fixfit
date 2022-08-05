@@ -27,6 +27,14 @@ const EditPost = ({route}) => {
 
     const [ url, setUrl ] = useState('');
     const [ caption, setCaption ] = useState('');
+    const [ value, setValue ] = React.useState({
+      accessories: '',
+      outerwear: '',
+      tops: '',
+      bottoms: '',
+      dresses: '',
+      shoes: '',
+  })
     const [ uploading, setUploading ] = useState(false);
     
     useEffect(() => {
@@ -102,6 +110,70 @@ const EditPost = ({route}) => {
                 onChangeText={(text) => setCaption(text)}
             />
           </View> 
+          <View 
+            style={styles.categoryValues}
+          >
+            <View style={styles.category}>
+              <Text style={styles.categoryHeader}>Accessories</Text>
+              <TextInput 
+                  style={styles.categoryInput}
+                  multiline={true}
+                  textAlignVertical="top"
+                  placeholder="Items..."
+                  onChangeText={(text) => setValue({ ...value, accessories: text })}
+              />
+            </View>
+            <View style={styles.category}>
+              <Text style={styles.categoryHeader}>Outerwear</Text>
+              <TextInput 
+                  style={styles.categoryInput}
+                  multiline={true}
+                  textAlignVertical="top"
+                  placeholder="Items..."
+                  onChangeText={(text) => setValue({ ...value, outerwear: text })}
+              />
+            </View>
+            <View style={styles.category}>
+              <Text style={styles.categoryHeader}>Tops</Text>
+              <TextInput 
+                  style={styles.categoryInput}
+                  multiline={true}
+                  textAlignVertical="top"
+                  placeholder="Items..."
+                  onChangeText={(text) => setValue({ ...value, tops: text })}
+              />
+            </View>
+            <View style={styles.category}>
+              <Text style={styles.categoryHeader}>Bottoms</Text>
+              <TextInput 
+                  style={styles.categoryInput}
+                  multiline={true}
+                  textAlignVertical="top"
+                  placeholder="Items..."
+                  onChangeText={(text) => setValue({ ...value, bottoms: text })}
+              />
+            </View>
+            <View style={styles.category}>
+              <Text style={styles.categoryHeader}>Dresses / Skirts</Text>
+              <TextInput 
+                  style={styles.categoryInput}
+                  multiline={true}
+                  textAlignVertical="top"
+                  placeholder="Items..."
+                  onChangeText={(text) => setValue({ ...value, dresses: text })}
+              />
+            </View>
+            <View style={styles.category}>
+              <Text style={styles.categoryHeader}>Shoes</Text>
+              <TextInput 
+                  style={styles.categoryInput}
+                  multiline={true}
+                  textAlignVertical="top"
+                  placeholder="Items..."
+                  onChangeText={(text) => setValue({ ...value, shoes: text })}
+              />
+            </View>
+          </View>
         </ScrollView>
       </SafeAreaView>
     )
@@ -188,7 +260,24 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    cateogoryValues: {
+      flex: 1,
+      flexDirection: 'column'
+    },
+    category: {
+      margin: 15,
+      flex: 1,
+      flexDirection: 'column'
+    },
+    categoryHeader: {
+      fontWeight: '700'
+    },
+    categoryInput: {
+      flex: 1,
+      marginVertical: 6,
+      paddingHorizontal: 6,
+    },
   });
 
 export default EditPost;

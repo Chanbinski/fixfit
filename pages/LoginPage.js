@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Input, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Input, TextInput, TouchableOpacity, Button, Alert, ScrollView } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const auth = getAuth();
@@ -28,6 +28,7 @@ const Login = ({navigation}) => {
 
     return (
       <>
+      <ScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={styles.container}>
           <Text style={styles.signintitle}>fixfit</Text>
           <TextInput
@@ -79,6 +80,7 @@ const Login = ({navigation}) => {
             >Sign Up for fixfit</Text>
           </TouchableOpacity>
         </SafeAreaView>
+        </ScrollView>
       </>
     );
   }

@@ -67,7 +67,7 @@ const ProfilePage = (props) => {
           }}
         />
         </View>
-      <ProfileBody name={props.name} urls={urls} />
+      <ProfileBody name={props.name} urls={urls} profilePic={props.profilePic} profilePicName={props.profilePicName} bio={props.bio} />
       <ScrollView style={styles.displayBox}>
           <FlatList
             data={urls}
@@ -111,9 +111,28 @@ const ProfileBody = (props) => {
   
   return (
     <View style={styles.container}>
-        <Avatar.Image size={100} source={require('../assets/adaptive-icon.png')} style={styles.avatar}/>
+      {/* <Image 
+            style={{ marginVertical: 25, width: 120, height: 120, borderRadius: 100 }} 
+            source={{ uri: props.profilePic }}
+        /> */}
+      <CachedImage
+          source={{ 
+            uri: props.profilePic, // (required) -- URI of the image to be cached         
+          }}
+          cacheKey={props.profilePicName} // (required) -- key to store image locally
+          placeholderContent={( // (optional) -- shows while the image is loading
+            <ActivityIndicator // can be any react-native tag
+              size="small"
+              style={{
+                flex: 1,
+                justifyContent: "center",
+              }}
+            />
+          )}
+          style={{ marginVertical: 25, width: 120, height: 120, borderRadius: 100 }} // pass-through to <Image /> tag s
+      />
         <Text style={styles.profilename}>{props.name}</Text>
-        <Text style={styles.button}>Cal 25+2</Text>
+        <Text style={styles.button}>{props.bio}</Text>
         <TouchableOpacity
           style={styles.buttonfilled}
           onPress={() => {navigation.navigate('EditProfile')}}

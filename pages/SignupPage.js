@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, Button, Alert, ScrollView } from 'react-native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth';
 import { collection, setDoc, doc } from 'firebase/firestore'
 import { db } from '../config/firebase'
@@ -30,10 +30,14 @@ const SignupPage = ({navigation}) => {
       } else {
         try {
           await createUserWithEmailAndPassword(auth, value.email, value.password);
+          const dateTime = Date.now() + '';
           try {
             await setDoc(doc(db, "users", value.email), {
               name: value.name,
-              username: value.username
+              username: value.username,
+              bio: '',
+              profilePicture: 'https://www.publicdomainpictures.net/pictures/200000/nahled/plain-gray-background.jpg',
+              profilePicName: dateTime
             })
           }
           catch(error) {
@@ -60,14 +64,15 @@ const SignupPage = ({navigation}) => {
     
     return (
       <>
+      <ScrollView contentContainerStyle={{flex: 1}}>
         <SafeAreaView style={styles.container}>
           <Text style={styles.signuptitle}>Create your account</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Name"
-            value={value.name}
-            onChangeText={(text) => setValue({ ...value, name: text })}
-          ></TextInput>
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              value={value.name}
+              onChangeText={(text) => setValue({ ...value, name: text })}
+            ></TextInput>
           <TextInput
             style={styles.input}
             placeholder="Username"
@@ -127,6 +132,7 @@ const SignupPage = ({navigation}) => {
             >Already have an account?</Text>
           </TouchableOpacity>
         </SafeAreaView>
+        </ScrollView>
       </>
     );
   }
